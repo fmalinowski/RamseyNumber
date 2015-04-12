@@ -16,7 +16,7 @@ public class CliqueCounter {
 					" rows to look for monochromatic subcliques");
 			return;
 		}
-		if (graph[0].length != this.SUBCLIQUE_SIZE) {
+		if (graph[0].length < this.SUBCLIQUE_SIZE) {
 			System.err.println("The graph has " + graph[0].length + 
 					" columns and should have at least " + this.SUBCLIQUE_SIZE + 
 					" columns to look for monochromatic subcliques");
@@ -30,7 +30,7 @@ public class CliqueCounter {
 	/*
 	 * The graph is fully connected and we check only values above the diagonal.
 	 */
-	int getMonochromaticSubcliquesCount() {
+	public int getMonochromaticSubcliquesCount() {
 		int i, j, k, l, m, n, o;
 		int count = 0;
 		
