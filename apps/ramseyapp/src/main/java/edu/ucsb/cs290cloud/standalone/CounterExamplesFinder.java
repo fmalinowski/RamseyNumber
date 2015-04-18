@@ -8,14 +8,17 @@ public class CounterExamplesFinder {
 	public static final int MAX_GRAPH_SIZE = 102;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
 	
-	public void startStrategy1() {
+	public void startStrategy1(Graph graph) {
 		int graphSize, cliquesCount, bestCliquesCount, newValue;
 		int best_i, best_j;
 		FIFOEdge fifoEdge;
-		Graph graph;
-		
-		graphSize = 8;
-		graph = new Graph(graphSize);
+
+		if(null==graph)
+		{
+			graphSize = 8;
+			graph = new Graph(graphSize);
+		}
+
 		fifoEdge = new FIFOEdge(TABOO_SIZE);
 		best_i = -1;
 		best_j = -1;
@@ -87,13 +90,16 @@ public class CounterExamplesFinder {
 		fifoEdge.resetFIFO();
 	}
 	
-	public void startStrategy2() {
+	public void startStrategy2(Graph graph) {
 		int graphSize, cliquesCount, bestCliquesCount;
 		int bestDistance;
-		Graph graph;
-		
-		graphSize = 8;
-		graph = new Graph(graphSize);
+
+		if(null == graph)
+		{
+			graphSize = 8;
+			graph = new Graph(graphSize);
+		}
+
 		bestDistance = -1;
 		
 		while (graph.size() < MAX_GRAPH_SIZE) {

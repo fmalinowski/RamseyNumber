@@ -9,6 +9,18 @@ public class Graph {
 		this.size = size;
 		this.graph = new int[size][size];
 	}
+
+	/**
+	 * this function only checks the first array for length.
+	 * It is not going to check every row for the length.
+	 * For the moment it will assume that the input is properly formatted, but we might change that later.
+	 * @param graph
+	 */
+	public Graph(int [][] graph)
+	{
+		size = graph.length;
+		this.graph = graph;
+	}
 	
 	public int size() {
 		return this.size;
