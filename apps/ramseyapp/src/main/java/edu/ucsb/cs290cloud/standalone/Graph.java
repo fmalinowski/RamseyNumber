@@ -67,14 +67,14 @@ public class Graph {
 		}
 		
 		newGraph = new Graph(newGraphSize);
-		
+
+		Random rn = new Random();
 		for (int i = 0; i < this.size; i++) {
 			
 			for (int j = 0; j < this.size; j++) {
 				newGraph.graph[i][j] = this.graph[i][j];
 			}
-			
-			Random rn = new Random();
+
 			int s = rn.nextInt(2);
 			newGraph.graph[i][this.size()] = s;
 		}
