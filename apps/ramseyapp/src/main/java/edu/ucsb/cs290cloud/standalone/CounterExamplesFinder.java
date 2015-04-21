@@ -97,7 +97,7 @@ public class CounterExamplesFinder {
 
 		if(null==graph)
 		{
-			graphSize = 72;
+			graphSize = 60;
 			graph = GraphFactory.generateRandomGraph(graphSize);
 		}
 
@@ -137,7 +137,7 @@ public class CounterExamplesFinder {
 
 							// We check if number of cliques decreased: it's a good thing
 							cliquesCount = new CliqueCounter(graph.getRawGraph())
-									.getMonochromaticSubcliquesCount();
+									.getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
 
 							if ((cliquesCount < bestCliquesCount)) {
 								bestCliquesCount = cliquesCount;
