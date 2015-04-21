@@ -120,7 +120,7 @@ public class CliqueCounter {
 															this.graph[i][j] == this.graph[n][o]) {
 
 														count++;
-														if(count == terminateAt)
+														if(count >= terminateAt)
 														{
 															return count;
 														}

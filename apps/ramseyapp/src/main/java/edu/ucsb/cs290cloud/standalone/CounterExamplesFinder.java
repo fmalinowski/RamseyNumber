@@ -144,6 +144,10 @@ public class CounterExamplesFinder {
 								best_i = i;
 								best_j = j;
 							}
+							else if(cliquesCount == bestCliquesCount)
+							{
+								//add to list that will be randomized
+							}
 
 							// Set back the original value
 							graph.flipValue(i, j);
