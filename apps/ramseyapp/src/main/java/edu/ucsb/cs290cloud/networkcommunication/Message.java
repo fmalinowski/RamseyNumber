@@ -9,10 +9,17 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-	
-	private int[][] graph;
-	private String strategy;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -186320699428979457L;
 	private String message;
+	private String strategy;
+	private int[][] graph;
+	private int bestCount;
+	private int bestCountTime;
+	private int nbTimesBestCount;	
+	
 	public int[][] getGraph() {
 		return graph;
 	}
@@ -31,11 +38,28 @@ public class Message implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	public int getBestCountTime() {
+		return bestCountTime;
+	}
+	public void setBestCountTime(int bestCountTime) {
+		this.bestCountTime = bestCountTime;
+	}
+	public int getBestCount() {
+		return bestCount;
+	}
+	public void setBestCount(int bestCount) {
+		this.bestCount = bestCount;
+	}
+	public int getNbTimesBestCount() {
+		return nbTimesBestCount;
+	}
+	public void setNbTimesBestCount(int nbTimesBestCount) {
+		this.nbTimesBestCount = nbTimesBestCount;
+	}
 	
 	public byte[] serialize() {
 		ByteArrayOutputStream bos;
 		ObjectOutput out;
-		byte[] serializedMessage;
 		
 		bos = new ByteArrayOutputStream();
 		out = null;
@@ -67,5 +91,4 @@ public class Message implements Serializable {
 		
 		return receivedMessage;
 	}
-
 }

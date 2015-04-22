@@ -37,7 +37,7 @@ public class Graph {
 	}
 	
 	public void flipValue(int i, int j) {
-		this.graph[i][j] = 1 - this.graph[i][j]; 
+		this.graph[i][j] = 1 - this.graph[i][j];
 	}
 	
 	public int[][] getRawGraph() {
@@ -80,5 +80,9 @@ public class Graph {
 		}
 
 		return newGraph;
+	}
+	
+	public int getGraphID() {
+		return this.graph.hashCode();
 	}
 }
