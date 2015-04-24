@@ -8,53 +8,25 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+
 public class Message implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -186320699428979457L;
 	private String message;
-	private String strategy;
-	private int[][] graph;
-	private int bestCount;
-	private int bestCountTime;
-	private int nbTimesBestCount;	
+	private GraphWithInfos graphWithInfos;
 	
-	public int[][] getGraph() {
-		return graph;
+	public GraphWithInfos getGraph() {
+		return graphWithInfos;
 	}
-	public void setGraph(int[][] graph) {
-		this.graph = graph;
-	}
-	public String getStrategy() {
-		return strategy;
-	}
-	public void setStrategy(String strategy) {
-		this.strategy = strategy;
+	public void setGraph(GraphWithInfos graphWithInfos) {
+		this.graphWithInfos = graphWithInfos;
 	}
 	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
-	}
-	public int getBestCountTime() {
-		return bestCountTime;
-	}
-	public void setBestCountTime(int bestCountTime) {
-		this.bestCountTime = bestCountTime;
-	}
-	public int getBestCount() {
-		return bestCount;
-	}
-	public void setBestCount(int bestCount) {
-		this.bestCount = bestCount;
-	}
-	public int getNbTimesBestCount() {
-		return nbTimesBestCount;
-	}
-	public void setNbTimesBestCount(int nbTimesBestCount) {
-		this.nbTimesBestCount = nbTimesBestCount;
 	}
 	
 	public byte[] serialize() {

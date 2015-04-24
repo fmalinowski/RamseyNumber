@@ -1,9 +1,13 @@
 package edu.ucsb.cs290cloud.commons;
 
+import java.io.Serializable;
+
 import edu.ucsb.cs290cloud.standalone.Graph;
 
 public class GraphWithInfos extends Graph {
 	
+	private static final long serialVersionUID = -4751788528533102281L;
+
 	public enum Status {
 		BEING_COMPUTED,
 		COUNTER_EXAMPLE_FOUND_BUT_NOT_SAVED,
@@ -15,6 +19,7 @@ public class GraphWithInfos extends Graph {
 	private int graphID;
 	private Status status; 
 	private int timeSpentOnBestCount;
+	private String strategyUsed;
 
 	public GraphWithInfos(int size) {
 		super(size);
@@ -54,6 +59,14 @@ public class GraphWithInfos extends Graph {
 
 	public void setTimeSpentOnBestCount(int timeSpentOnBestCount) {
 		this.timeSpentOnBestCount = timeSpentOnBestCount;
+	}
+	
+	public String getStrategyUsed() {
+		return strategyUsed;
+	}
+
+	public void setStrategyUsed(String strategyUsed) {
+		this.strategyUsed = strategyUsed;
 	}
 	
 	public int getGraphID() {

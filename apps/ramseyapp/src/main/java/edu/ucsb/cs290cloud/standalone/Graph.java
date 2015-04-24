@@ -1,8 +1,9 @@
 package edu.ucsb.cs290cloud.standalone;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Graph {
+public class Graph implements Serializable {
 	
 	private int[][] graph;
 	private int size;

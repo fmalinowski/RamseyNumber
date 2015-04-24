@@ -11,6 +11,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
 
+import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.networkcommunication.Message;
 
 public class ServerResponder implements Runnable {
@@ -33,8 +34,7 @@ public class ServerResponder implements Runnable {
 		receivedBytes = this.packet.getData();
 		messageFromClient = Message.deserialize(receivedBytes);
 		
-		messageForClient = null; // TO BE REMOVED
-//		messageForClient = makeMessage();
+		messageForClient = this.getNewTaskForClient(messageFromClient);
 		bytesToSend = messageForClient.serialize();
 		this.sendMessage(bytesToSend);
 	}
@@ -50,6 +50,46 @@ public class ServerResponder implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Message getNewTaskForClient(Message messageFromClient) {
+		GraphWithInfos graphForClient;
+		Message answerForClient;
+		
+		// The incoming message to the client can be:
+		// READY to ask a first task to the master node
+		// COUNTEREXAMPLE to give a counter example just found by the client
+		// STATUS to send an update to master about the current computation on the client machine
+		
+		// The answer to the client can be:
+		// NEWGRAPH in order to switch/start computing on a new graph
+		// CONTINUE in order to continue
+		
+		graphForClient = null;
+		answerForClient = new Message();
+		
+		if (messageFromClient.getMessage().equals("READY")) {
+			graphForClient = this.scheduler.getNewTask();
+			answerForClient.setMessage("NEWGRAPH");
+		}
+		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
+			graphForClient = this.scheduler.processFoundCounterExample();
+			answerForClient.setMessage("NEWGRAPH");
+		}
+		else if(messageFromClient.getMessage().equals("STATUS")) {
+			graphForClient = this.scheduler.processStatusUpdateFromClient();
+			
+			if (graphForClient == null) {
+				answerForClient.setMessage("CONTINUE");
+			}
+			else {
+				answerForClient.setMessage("NEWGRAPH");
+			}
+		}
+		
+		answerForClient.setGraph(graphForClient);
+		
+		return answerForClient;
 	}
 
 }
