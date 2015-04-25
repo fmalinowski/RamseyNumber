@@ -12,54 +12,51 @@ public class ClientMessenger implements Runnable {
 
 	private DatagramSocket clientSocket;
 	private DatagramPacket receivePacket;
-	private String instruction;
 	private Message messageToServer, messageFromServer;
 	private byte[] receivedBytes, bytesToSend;
+	private InetAddress serverIP;
+	private int serverPort;
 
-	public ClientMessenger(String msg) {
-		this.instruction = msg;
+	public ClientMessenger(Message msg, DatagramSocket socket, InetAddress ip,
+			int port) {
+		this.messageToServer = msg;
+		this.clientSocket = socket;
+		this.serverIP = ip;
+		this.serverPort = port;
 	}
 
 	public void run() {
-		try {
-			InetAddress IPAddress = InetAddress.getByName("localhost");
-			clientSocket = new DatagramSocket();
-			
-			// send the message
-			messageToServer.setMessage(instruction);
-			if(instruction == "READY") {
-				
+		while (true) {
+			try {
+				// get the new message each iteration
+				this.messageToServer = Client.msgToServer;
+
+				// send the message
+				if (messageToServer.getMessage() == "READY") {
+					;
+				} else if (messageToServer.getMessage() == "COUNTEREXAMPLE") {
+					;
+				} else if (messageToServer.getMessage() == "STATUS") {
+					;
+				}
+				bytesToSend = messageToServer.serialize();
+				DatagramPacket sendPacket = new DatagramPacket(bytesToSend,
+						bytesToSend.length, serverIP, serverPort);
+				clientSocket.send(sendPacket);
+
+				// receive response
+				receivePacket = new DatagramPacket(receivedBytes,
+						receivedBytes.length);
+				receivedBytes = receivePacket.getData();
+				messageFromServer = Message.deserialize(receivedBytes);
+				Client.currentMsgFromServer = messageFromServer;
+				System.out.println("From Server: "
+						+ messageFromServer.getMessage());
+				// wait for 30s
+				Thread.sleep(30000);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			else if(instruction == "COUNTEREXAMPLE") {
-				messageToServer.setBestCount(bestCount);
-				messageToServer.setBestCountTime(bestCountTime);
-				messageToServer.setGraph(graph);
-				messageToServer.setStrategy(strategy);
-				messageToServer.setNbTimesBestCount(nbTimesBestCount);
-			}
-			else if(instruction == "STATUS") {
-				messageToServer.setBestCount(bestCount);
-				messageToServer.setBestCountTime(bestCountTime);
-				messageToServer.setGraph(graph);
-				messageToServer.setStrategy(strategy);
-				messageToServer.setNbTimesBestCount(nbTimesBestCount);
-			}
-			bytesToSend = messageToServer.serialize();
-			DatagramPacket sendPacket = new DatagramPacket(bytesToSend,
-					bytesToSend.length, IPAddress, 9876);
-			clientSocket.send(sendPacket);
-			
-			// receive response
-			receivePacket = new DatagramPacket(receivedBytes,
-					receivedBytes.length);
-			receivedBytes = receivePacket.getData();
-			messageFromServer = Message.deserialize(receivedBytes);	
-			Client.currentMsgFromServer = messageFromServer;
-			System.out.println("From Server: " + messageFromServer.getMessage());
-			
-			clientSocket.close();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
