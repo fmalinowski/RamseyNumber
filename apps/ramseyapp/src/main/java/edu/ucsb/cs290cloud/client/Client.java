@@ -34,9 +34,6 @@ public class Client implements Runnable {
 //				currentMsgFromServer.getGraph();
 //				currentMsgFromServer.getNbTimesBestCount();
 //				currentMsgFromServer.getStrategy();
-				if() {
-					hasCounterE = true;
-				}
 				if(hasCounterE) {
 					msgToServer.setMessage("COUNTEREXAMPLE");
 					hasCounterE = false;
