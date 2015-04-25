@@ -30,21 +30,14 @@ public class ClientMessenger implements Runnable {
 			try {
 				// get the new message each iteration
 				this.messageToServer = Client.msgToServer;
-
-				// send the message
-				if (messageToServer.getMessage() == "READY") {
-					;
-				} else if (messageToServer.getMessage() == "COUNTEREXAMPLE") {
-					;
-				} else if (messageToServer.getMessage() == "STATUS") {
-					;
-				}
+				
+				// send the message to the server
 				bytesToSend = messageToServer.serialize();
 				DatagramPacket sendPacket = new DatagramPacket(bytesToSend,
 						bytesToSend.length, serverIP, serverPort);
 				clientSocket.send(sendPacket);
 
-				// receive response
+				// receive response from server
 				receivePacket = new DatagramPacket(receivedBytes,
 						receivedBytes.length);
 				receivedBytes = receivePacket.getData();
@@ -52,7 +45,8 @@ public class ClientMessenger implements Runnable {
 				Client.currentMsgFromServer = messageFromServer;
 				System.out.println("From Server: "
 						+ messageFromServer.getMessage());
-				// wait for 30s
+				
+				// wait for 30s before doing it again (arbitrary)
 				Thread.sleep(30000);
 			} catch (Exception e) {
 				e.printStackTrace();

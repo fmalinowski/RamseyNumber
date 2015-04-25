@@ -10,6 +10,7 @@ public class Client implements Runnable {
 	
 	public static Message currentMsgFromServer;
 	public static Message msgToServer;
+	private boolean hasCounterE = false;
 	private GraphWithInfos currentGraph;
 	private DatagramSocket clientSocket;
 	private int port = 9876;
@@ -26,16 +27,34 @@ public class Client implements Runnable {
 		}
 		
 		while(true) {
-			// Graph things
+			// read server response and then process
 			if(currentMsgFromServer.getMessage() == "NEWGRAPH") {
+//				currentMsgFromServer.getBestCount();
+//				currentMsgFromServer.getBestCountTime();
+//				currentMsgFromServer.getGraph();
+//				currentMsgFromServer.getNbTimesBestCount();
+//				currentMsgFromServer.getStrategy();
+				if() {
+					hasCounterE = true;
+				}
+				if(hasCounterE) {
+					msgToServer.setMessage("COUNTEREXAMPLE");
+					hasCounterE = false;
+				}
+				else msgToServer.setMessage("STATUS");
+			}	
+			else if(currentMsgFromServer.getMessage() == "CONTINUE") {
 //				msgToServer.setBestCount();
 //				msgToServer.setBestCountTime();
 //				msgToServer.setGraph(graph);
 //				msgToServer.setStrategy(strategy);
 //				msgToServer.setNbTimesBestCount(nbTimesBestCount);
-			}	
-			else if(currentMsgFromServer.getMessage() == "CONTINUE") {
-
+				
+				if(hasCounterE) {
+					msgToServer.setMessage("COUNTEREXAMPLE");
+					hasCounterE = false;
+				}
+				else msgToServer.setMessage("STATUS");
 			}
 		}
 	}
