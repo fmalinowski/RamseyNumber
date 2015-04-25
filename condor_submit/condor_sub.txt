@@ -1,0 +1,22 @@
+####################
+#
+# Example 2
+# Execute a single Java class,
+# not on a shared file system
+#
+# executable = anexecutable.jar
+# jar_files  = anexecutable.jar
+# arguments  = some.main.ClassFile
+####################
+
+  universe       = java
+  executable     = Hello.class
+  arguments      = Hello
+  
+  output         = Hello.output.$(Process)
+  error          = Hello.error.$(Process)
+  log 			= simple.log.$(Process)
+  should_transfer_files = YES
+  when_to_transfer_output = ON_EXIT
+  queue
+  
