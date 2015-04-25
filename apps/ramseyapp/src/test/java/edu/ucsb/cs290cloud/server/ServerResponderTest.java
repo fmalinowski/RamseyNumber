@@ -93,7 +93,7 @@ public class ServerResponderTest {
 		
 		// Expected calls and returns
 		graphFromSchedulerWhenReady = new GraphWithInfos(2);
-		schedulerMock.getNewTask(graphFromClient);
+		schedulerMock.getNewTask();
 		PowerMock.expectLastCall().andReturn(graphFromSchedulerWhenReady);
 		PowerMock.replayAll();
 		

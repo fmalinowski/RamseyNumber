@@ -71,7 +71,7 @@ public class ServerResponder implements Runnable {
 		graphFromClient = messageFromClient.getGraph();
 		
 		if (messageFromClient.getMessage().equals("READY")) {
-			graphForClient = this.scheduler.getNewTask(graphFromClient);
+			graphForClient = this.scheduler.getNewTask();
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
