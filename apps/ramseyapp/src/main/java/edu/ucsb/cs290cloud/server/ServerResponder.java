@@ -53,7 +53,7 @@ public class ServerResponder implements Runnable {
 	}
 	
 	public Message getNewTaskForClient(Message messageFromClient) {
-		GraphWithInfos graphForClient;
+		GraphWithInfos graphForClient, graphFromClient;
 		Message answerForClient;
 		
 		// The incoming message to the client can be:
@@ -68,16 +68,18 @@ public class ServerResponder implements Runnable {
 		graphForClient = null;
 		answerForClient = new Message();
 		
+		graphFromClient = messageFromClient.getGraph();
+		
 		if (messageFromClient.getMessage().equals("READY")) {
-			graphForClient = this.scheduler.getNewTask();
+			graphForClient = this.scheduler.getNewTask(graphFromClient);
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
-			graphForClient = this.scheduler.processFoundCounterExample();
+			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
-			graphForClient = this.scheduler.processStatusUpdateFromClient();
+			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
 			
 			if (graphForClient == null) {
 				answerForClient.setMessage("CONTINUE");

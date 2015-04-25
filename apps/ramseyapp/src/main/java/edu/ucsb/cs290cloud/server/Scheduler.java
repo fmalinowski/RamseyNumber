@@ -14,7 +14,7 @@ public class Scheduler {
 	 * It is called the first time the client connects to master.
 	 * @return the first graph that should be computed by the client.
 	 */
-	public GraphWithInfos getNewTask() {
+	public GraphWithInfos getNewTask(GraphWithInfos graphFromClient) {
 		return null;
 	}
 	
@@ -22,7 +22,7 @@ public class Scheduler {
 	 * Called when a client has found a counter example
 	 * @return the new graph that should be computed by the client
 	 */
-	public GraphWithInfos processFoundCounterExample() {
+	public GraphWithInfos processFoundCounterExample(GraphWithInfos graphFromClient) {
 		return null;
 	}
 	
@@ -31,7 +31,7 @@ public class Scheduler {
 	 * @return null if the client should continue its work on the current matrix otherwise it 
 	 * returns the new graph that should be computed by the client
 	 */
-	public GraphWithInfos processStatusUpdateFromClient() {
+	public GraphWithInfos processStatusUpdateFromClient(GraphWithInfos graphFromClient) {
 		return null;
 	}
 	

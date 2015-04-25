@@ -16,6 +16,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.networkcommunication.Message;
 
 @RunWith(PowerMockRunner.class)
@@ -71,6 +72,86 @@ public class ServerResponderTest {
 		PowerMock.verifyAll();
 		
 		
+	}
+	
+	@Test
+	public void testGetNewTaskForClient() {
+		Scheduler schedulerMock;
+		Message messageFromClient, messageFromServer;
+		GraphWithInfos graphFromClient, graphFromSchedulerWhenReady,
+			graphFromSchedulerWhenCounterExample, graphFromSchedulerWhenStatus;
+		ServerResponder serverResponder;
+		DatagramSocket serverSocketMock;
+		DatagramPacket packetMock;
+		
+		// Create the mocks
+		serverSocketMock = PowerMock.createMock(DatagramSocket.class);
+		packetMock = PowerMock.createMock(DatagramPacket.class);
+		schedulerMock = PowerMock.createMock(Scheduler.class);
+		
+		graphFromClient = new GraphWithInfos(1);
+		
+		// ** Case where client sends a Ready message **
+		messageFromClient = new Message();
+		messageFromClient.setMessage("READY");
+		messageFromClient.setGraph(graphFromClient);
+		
+		// Expected calls and returns
+		graphFromSchedulerWhenReady = new GraphWithInfos(2);
+		schedulerMock.getNewTask(graphFromClient);
+		PowerMock.expectLastCall().andReturn(graphFromSchedulerWhenReady);
+		PowerMock.replayAll();
+		
+		// Test
+		serverResponder = new ServerResponder(serverSocketMock, packetMock, schedulerMock);
+		messageFromServer = serverResponder.getNewTaskForClient(messageFromClient);
+		
+		assertEquals("NEWGRAPH", messageFromServer.getMessage());
+		assertEquals(graphFromSchedulerWhenReady, messageFromServer.getGraph());
+		
+		// ** Case where client sends a COUNTEREXAMPLE message **
+		PowerMock.reset(schedulerMock);
+		messageFromClient.setMessage("COUNTEREXAMPLE");
+		graphFromSchedulerWhenCounterExample = new GraphWithInfos(3);
+		
+		schedulerMock.processFoundCounterExample(graphFromClient);
+		PowerMock.expectLastCall().andReturn(graphFromSchedulerWhenCounterExample);
+		PowerMock.replay(schedulerMock);
+		
+		messageFromServer = serverResponder.getNewTaskForClient(messageFromClient);
+		
+		assertEquals("NEWGRAPH", messageFromServer.getMessage());
+		assertEquals(graphFromSchedulerWhenCounterExample, messageFromServer.getGraph());
+		
+		// ** Case where client sends a STATUS message and server wants client to switch to 
+		// another graph **
+		PowerMock.reset(schedulerMock);
+		messageFromClient.setMessage("STATUS");
+		graphFromSchedulerWhenStatus = new GraphWithInfos(4);
+				
+		schedulerMock.processStatusUpdateFromClient(graphFromClient);
+		PowerMock.expectLastCall().andReturn(graphFromSchedulerWhenStatus);
+		PowerMock.replay(schedulerMock);
+				
+		messageFromServer = serverResponder.getNewTaskForClient(messageFromClient);
+				
+		assertEquals("NEWGRAPH", messageFromServer.getMessage());
+		assertEquals(graphFromSchedulerWhenStatus, messageFromServer.getGraph());
+		
+		// ** Case where client sends a STATUS message and server wants client to continue **
+		PowerMock.reset(schedulerMock);
+		messageFromClient.setMessage("STATUS");
+						
+		schedulerMock.processStatusUpdateFromClient(graphFromClient);
+		PowerMock.expectLastCall().andReturn(null);
+		PowerMock.replay(schedulerMock);
+						
+		messageFromServer = serverResponder.getNewTaskForClient(messageFromClient);
+						
+		assertEquals("CONTINUE", messageFromServer.getMessage());
+		assertEquals(null, messageFromServer.getGraph());
+		
+		PowerMock.verifyAll();
 	}
 
 }
