@@ -22,11 +22,6 @@ import edu.ucsb.cs290cloud.networkcommunication.Message;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ServerResponder.class}) // Class that creates the new instance and that we want to mock
 public class ServerResponderTest {
-
-//	@Test
-//	public void testReceiveAndSendMessage() {	
-////		fail("Not yet implemented");
-//	}
 	
 	@Test
 	public void testSendMessage() {
@@ -152,6 +147,58 @@ public class ServerResponderTest {
 		assertEquals(null, messageFromServer.getGraph());
 		
 		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public void testRun() {
+		Scheduler schedulerMock;
+		Message messageFromClient, messageFromServer;
+		ServerResponder serverResponderPartialMock;
+		DatagramSocket serverSocketMock;
+		DatagramPacket packetMock;
+		GraphWithInfos graphFromClient, graphFromServer;
+		byte[] serializedMessageFromClient, serializedMessageFromServer;
+		
+		// Create the mocks
+		serverSocketMock = PowerMock.createMock(DatagramSocket.class);
+		packetMock = PowerMock.createMock(DatagramPacket.class);
+		schedulerMock = PowerMock.createMock(Scheduler.class);
+		
+		graphFromClient = new GraphWithInfos(2);
+		messageFromClient = new Message();
+		messageFromClient.setMessage("WHATEVER");
+		messageFromClient.setGraph(graphFromClient);
+		
+		serializedMessageFromClient = messageFromClient.serialize();
+		
+		graphFromServer = new GraphWithInfos(3);
+		messageFromServer = new Message();
+		messageFromServer.setMessage("RESPONSE");
+		messageFromServer.setGraph(graphFromServer);
+		serializedMessageFromServer = messageFromServer.serialize();
+		
+		// Partial mocking of ServerResponder to mock sendMessage and getNewTaskForClient
+		serverResponderPartialMock = EasyMock.createMockBuilder(ServerResponder.class)
+			.withConstructor(serverSocketMock, packetMock, schedulerMock)
+			.addMockedMethod("getNewTaskForClient")
+			.addMockedMethod("sendMessage")
+			.createMock();
+		
+		packetMock.getData();
+		PowerMock.expectLastCall().andReturn(serializedMessageFromClient);
+		
+		EasyMock.expect(serverResponderPartialMock.getNewTaskForClient(
+				EasyMock.anyObject(Message.class))).andReturn(messageFromServer);
+		
+		serverResponderPartialMock.sendMessage(aryEq(serializedMessageFromServer));
+		
+		PowerMock.replayAll();
+		EasyMock.replay(serverResponderPartialMock);
+		
+		serverResponderPartialMock.run();
+		
+		PowerMock.verifyAll();
+		EasyMock.verify(serverResponderPartialMock);
 	}
 
 }
