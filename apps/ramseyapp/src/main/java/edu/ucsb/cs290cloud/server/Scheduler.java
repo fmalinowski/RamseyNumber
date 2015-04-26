@@ -57,8 +57,7 @@ public class Scheduler {
 	 * 
 	 * @return the new graph that should be computed by the client
 	 */
-	public GraphWithInfos processFoundCounterExample(
-			GraphWithInfos graphFromClient) {
+	public GraphWithInfos processFoundCounterExample(GraphWithInfos graphFromClient) {
 		// Store Counter Example
 		// Get graph Max Size of Counter Examples and get graph being computed
 		// with lowest
@@ -79,15 +78,14 @@ public class Scheduler {
 	 *         otherwise it returns the new graph that should be computed by the
 	 *         client
 	 */
-	public GraphWithInfos processStatusUpdateFromClient(
-			GraphWithInfos graphFromClient) {
-
-		// TODO
+	public GraphWithInfos processStatusUpdateFromClient(GraphWithInfos graphFromClient) {
+		// Store Graph being Computed
 		// Get graph Max Size of Counter Examples and get graph being computed
 		// with lowest
 		// best count that is one size bigger than the graph max size of counter
 		// example
-		return null;
+		this.graphsExplorer.addGraphBeingComputed(graphFromClient);
+		return this.getNewTask();
 	}
 
 }
