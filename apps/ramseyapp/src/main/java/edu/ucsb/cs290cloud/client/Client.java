@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.networkcommunication.Message;
+import edu.ucsb.cs290cloud.commons.Message;
 
 public class Client implements Runnable {
 	

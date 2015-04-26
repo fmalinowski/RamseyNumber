@@ -1,10 +1,11 @@
-package edu.ucsb.cs290cloud.networkcommunication;
+package edu.ucsb.cs290cloud.commons;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+import edu.ucsb.cs290cloud.commons.Message;
 import edu.ucsb.cs290cloud.server.ServerResponder;
 
 public class MessageTest {
@@ -52,7 +53,6 @@ public class MessageTest {
 		assertEquals("HANG OVER STRATEGY", receivedGraphWithInfos.getStrategyUsed());
 		assertEquals(100000000, receivedGraphWithInfos.getTimeSpentOnBestCount());
 		
-		System.out.println("GRAPH SIZE:" + receivedGraphWithInfos.getRawGraph());
 		receivedGraph = receivedGraphWithInfos.getRawGraph(); 
 		assertEquals(2343456, receivedGraph[0][0]);
 		assertEquals(2345, receivedGraph[0][1]);

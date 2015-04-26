@@ -12,7 +12,7 @@ import java.net.DatagramSocket;
 import java.net.Socket;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.networkcommunication.Message;
+import edu.ucsb.cs290cloud.commons.Message;
 
 public class ServerResponder implements Runnable {
 	
