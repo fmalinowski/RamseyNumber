@@ -7,8 +7,8 @@ import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 
 public class GraphsExplorer {
 
-	ArrayList<LinkedList> counterExamples;
-	ArrayList<LinkedList> graphsBeingComputed;
+	private ArrayList<LinkedList> counterExamples;
+	private ArrayList<LinkedList> graphsBeingComputed;
 	
 	public GraphsExplorer() {
 		this.counterExamples = new ArrayList<LinkedList>();
@@ -71,9 +71,20 @@ public class GraphsExplorer {
 		return this.counterExamples.size();
 	}
 	
-	public LinkedList<GraphWithInfos> getBestCountGraphsOfSize(int graphSize) {
+	public int getMaxGraphBeingComputedSize() {
+		return -1;
+	}
+	
+	public LinkedList<GraphWithInfos> getCounterExamples(int graphSize) {
 		return null;
 	}
 	
+	public GraphWithInfos getGraphBeingComputedWithLowestBestCount(int graphSize) {
+		return null;
+	}
+	
+	public LinkedList<GraphWithInfos> getBestCountGraphsOfSize(int graphSize) {
+		return null;
+	}
 	
 }

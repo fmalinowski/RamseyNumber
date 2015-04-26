@@ -1,9 +1,14 @@
 package edu.ucsb.cs290cloud.server;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+import edu.ucsb.cs290cloud.standalone.GraphFactory;
 
 public class Scheduler {
 	
+	private final static int INITIAL_GENERATED_GRAPH_SIZE = 20;
 	private GraphsExplorer graphsExplorer;
 	
 	public Scheduler() {
@@ -14,14 +19,32 @@ public class Scheduler {
 	 * It is called the first time the client connects to master.
 	 * @return the first graph that should be computed by the client.
 	 */
-	public GraphWithInfos getNewTask() {
-		// TODO
-		// Get graph Max Size of Counter Examples and get graph being computed with lowest
-		// best count that is one size bigger than the graph max size of counter example
-		// Otherwise if no graph being computed, we generate new graph that is one size bigger
-		// than the biggest counter example size
-		// if we just start program, we generate empty graph at size X (X=35?)
-		return null;
+	public GraphWithInfos getNewTask() {		
+		GraphWithInfos graphForClient;
+		LinkedList<GraphWithInfos> counterExamples;
+		int maxCounterExampleSize, maxGraphBeingComputedSize;
+		
+		graphForClient = null;
+		maxCounterExampleSize = this.graphsExplorer.getMaxCounterExamplesSize();
+		maxGraphBeingComputedSize = this.graphsExplorer.getMaxGraphBeingComputedSize();
+		
+		if ((maxCounterExampleSize == 0) && (maxGraphBeingComputedSize == 0)) {
+			// Generate an initial graph of size X (it happens when we just launch master)
+			graphForClient = (GraphWithInfos) GraphFactory.generateRandomGraph(INITIAL_GENERATED_GRAPH_SIZE);
+		}
+		else if (maxGraphBeingComputedSize <= maxCounterExampleSize) {
+			// Generate new graph from counter Example
+			counterExamples = this.graphsExplorer.getCounterExamples(maxCounterExampleSize);
+			graphForClient = counterExamples.getFirst();
+			graphForClient = (GraphWithInfos) graphForClient.copyGraph(maxCounterExampleSize + 1);
+		}
+		else {
+			// Return the graph being computed that has its size just above 
+			// maxCounterExampleSize and with the lowest best count
+			graphForClient = this.graphsExplorer.getGraphBeingComputedWithLowestBestCount(maxGraphBeingComputedSize);
+		}
+				
+		return graphForClient;
 	}
 	
 	/**
