@@ -1,6 +1,7 @@
 package edu.ucsb.cs290cloud.commons;
 
 import java.io.Serializable;
+import java.util.Random;
 
 import edu.ucsb.cs290cloud.standalone.Graph;
 
@@ -82,5 +83,29 @@ public class GraphWithInfos extends Graph {
 		if (this.status != Status.COUNTER_EXAMPLE_SAVED) {
 			this.graphID = graphID;
 		}
+	}
+	
+	public GraphWithInfos copyGraph(int newGraphSize) {
+		GraphWithInfos newGraph;
+		
+		if (newGraphSize < this.size) {
+			System.err.println("ERROR: the new graph must be at least the same size as teh current graph.");
+			return null;
+		}
+		
+		newGraph = new GraphWithInfos(newGraphSize);
+		
+		Random rn = new Random();
+		for (int i = 0; i < this.size; i++) {
+			
+			for (int j = 0; j < this.size; j++) {
+				newGraph.setValue(i, j, this.graph[i][j]);
+			}
+
+			int s = rn.nextInt(2);
+			newGraph.setValue(i, this.size(), s);
+		}
+
+		return newGraph;
 	}
 }

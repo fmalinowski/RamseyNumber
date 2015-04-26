@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Graph implements Serializable {
 	
-	private int[][] graph;
-	private int size;
+	protected int[][] graph;
+	protected int size;
 	
 	public Graph(int size) {
 		this.size = size;
@@ -68,7 +68,7 @@ public class Graph implements Serializable {
 		}
 		
 		newGraph = new Graph(newGraphSize);
-
+		
 		Random rn = new Random();
 		for (int i = 0; i < this.size; i++) {
 			

@@ -8,7 +8,7 @@ import edu.ucsb.cs290cloud.standalone.GraphFactory;
 
 public class Scheduler {
 	
-	private final static int INITIAL_GENERATED_GRAPH_SIZE = 20;
+	public final static int INITIAL_GENERATED_GRAPH_SIZE = 20;
 	private GraphsExplorer graphsExplorer;
 	
 	public Scheduler() {
@@ -30,13 +30,13 @@ public class Scheduler {
 		
 		if ((maxCounterExampleSize == 0) && (maxGraphBeingComputedSize == 0)) {
 			// Generate an initial graph of size X (it happens when we just launch master)
-			graphForClient = (GraphWithInfos) GraphFactory.generateRandomGraph(INITIAL_GENERATED_GRAPH_SIZE);
+			graphForClient = GraphFactory.generateRandomGraph(INITIAL_GENERATED_GRAPH_SIZE);
 		}
 		else if (maxGraphBeingComputedSize <= maxCounterExampleSize) {
 			// Generate new graph from counter Example
 			counterExamples = this.graphsExplorer.getCounterExamples(maxCounterExampleSize);
 			graphForClient = counterExamples.getFirst();
-			graphForClient = (GraphWithInfos) graphForClient.copyGraph(maxCounterExampleSize + 1);
+			graphForClient = graphForClient.copyGraph(maxCounterExampleSize + 1);
 		}
 		else {
 			// Return the graph being computed that has its size just above 
