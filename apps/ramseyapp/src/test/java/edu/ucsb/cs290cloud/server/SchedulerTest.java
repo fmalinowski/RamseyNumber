@@ -1,4 +1,4 @@
-package edu.ucsb.cs290cloud.server;
+	package edu.ucsb.cs290cloud.server;
 
 import static org.junit.Assert.*;
 
@@ -330,7 +330,6 @@ public class SchedulerTest {
 		scheduler = new Scheduler();
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
-		// We make sure that the new graph contains the counterExample and is one size above
 		assertEquals(6, answerGraph.size());
 		assertEquals(graphBeingComputed, answerGraph);
 		
@@ -373,9 +372,47 @@ public class SchedulerTest {
 		scheduler = new Scheduler();
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
-		// We make sure that the new graph contains the counterExample and is one size above
 		assertEquals(4, answerGraph.size());
 		assertEquals(graphBeingComputed, answerGraph);
+		
+		// MAKE SURE ALL THE EXPECTED CALLS WERE MADE
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public void testProcessStatusUpdateFromClient_whenBestGraphBeingComputedIsFromThatClient() {
+		GraphsExplorer graphsExplorerMock;
+		Scheduler scheduler;
+		GraphWithInfos graphFromClient, answerGraph;
+		
+		graphFromClient = GraphFactory.generateRandomGraph(4);
+		
+		// CONFIGURE THE MOCK
+		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
+		try {
+			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
+		
+		graphsExplorerMock.getMaxCounterExamplesSize();
+		PowerMock.expectLastCall().andReturn(3);
+		
+		graphsExplorerMock.getMaxGraphBeingComputedSize();
+		PowerMock.expectLastCall().andReturn(4);
+		
+		graphsExplorerMock.getGraphBeingComputedWithLowestBestCount(4);
+		PowerMock.expectLastCall().andReturn(graphFromClient);
+		
+		PowerMock.replayAll();
+		
+		// TEST
+		scheduler = new Scheduler();
+		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
+		
+		assertEquals(null, answerGraph);
 		
 		// MAKE SURE ALL THE EXPECTED CALLS WERE MADE
 		PowerMock.verifyAll();

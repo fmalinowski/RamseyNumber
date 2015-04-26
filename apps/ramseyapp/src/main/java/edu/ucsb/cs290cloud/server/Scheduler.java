@@ -84,8 +84,18 @@ public class Scheduler {
 		// with lowest
 		// best count that is one size bigger than the graph max size of counter
 		// example
+		GraphWithInfos newGraphForClient;
 		this.graphsExplorer.addGraphBeingComputed(graphFromClient);
-		return this.getNewTask();
+		newGraphForClient = this.getNewTask(); 
+		
+		// If best graph being computed is the one just committed by the client,
+		// the client will continue on his graph.
+		if (newGraphForClient == graphFromClient) {
+			return null;
+		}
+		else {
+			return newGraphForClient;
+		}
 	}
 
 }
