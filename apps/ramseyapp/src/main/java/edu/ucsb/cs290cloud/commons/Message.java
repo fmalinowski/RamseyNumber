@@ -1,4 +1,4 @@
-package edu.ucsb.cs290cloud.networkcommunication;
+package edu.ucsb.cs290cloud.commons;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,8 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
-import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 
 public class Message implements Serializable {
 	

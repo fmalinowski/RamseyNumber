@@ -12,7 +12,7 @@ import java.net.DatagramSocket;
 import java.net.Socket;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.networkcommunication.Message;
+import edu.ucsb.cs290cloud.commons.Message;
 
 public class ServerResponder implements Runnable {
 	
@@ -71,7 +71,7 @@ public class ServerResponder implements Runnable {
 		graphFromClient = messageFromClient.getGraph();
 		
 		if (messageFromClient.getMessage().equals("READY")) {
-			graphForClient = this.scheduler.getNewTask(graphFromClient);
+			graphForClient = this.scheduler.getNewTask();
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {

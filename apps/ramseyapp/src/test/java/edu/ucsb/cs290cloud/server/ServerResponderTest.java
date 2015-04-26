@@ -17,7 +17,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.networkcommunication.Message;
+import edu.ucsb.cs290cloud.commons.Message;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ServerResponder.class}) // Class that creates the new instance and that we want to mock
@@ -93,7 +93,7 @@ public class ServerResponderTest {
 		
 		// Expected calls and returns
 		graphFromSchedulerWhenReady = new GraphWithInfos(2);
-		schedulerMock.getNewTask(graphFromClient);
+		schedulerMock.getNewTask();
 		PowerMock.expectLastCall().andReturn(graphFromSchedulerWhenReady);
 		PowerMock.replayAll();
 		
