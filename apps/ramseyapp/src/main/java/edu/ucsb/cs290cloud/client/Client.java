@@ -12,21 +12,23 @@ public class Client implements Runnable {
 	public static boolean isStale = true;
 	public static Message currentMsgFromServer;
 	public static Message msgToServer;
+	private CounterExamplesFinder counterExFinder;
 	private boolean hasCounterE = false;
 	private GraphWithInfos currentGraph;
 	private DatagramSocket clientSocket;
 	private int port = 9876;
 
-	public void sendCounterEx() {
+	public void sendCounterEx(CounterExamplesFinder cE) {
 		msgToServer.setMessage("COUNTEREXAMPLE");
 		msgToServer.setGraph(currentGraph);
 		// reset the counterexample flag
-		CounterExamplesFinder.foundCounterEx = false;
+		cE.foundCounterEx = false;
 	}
 
 	public void run() {
 
 		try {
+			counterExFinder = new CounterExamplesFinder();
 			InetAddress IPAddress = InetAddress.getByName("localhost");
 			clientSocket = new DatagramSocket();
 			// initial message
@@ -45,11 +47,11 @@ public class Client implements Runnable {
 					if (currentMsgFromServer.getMessage() == "NEWGRAPH") {
 						currentGraph = currentMsgFromServer.getGraph();
 						// run strategy w/ the graph
-						new CounterExamplesFinder().startStrategy1(currentGraph);
+						counterExFinder.startStrategy1(currentGraph);
 
 						// if a counter example is found...
-						if (CounterExamplesFinder.foundCounterEx) {
-							sendCounterEx();
+						if (counterExFinder.foundCounterEx) {
+							sendCounterEx(counterExFinder);
 						} else {
 							// status message
 							msgToServer.setMessage("STATUS");
@@ -57,9 +59,9 @@ public class Client implements Runnable {
 
 					} else if (currentMsgFromServer.getMessage() == "CONTINUE") {
 
-						new CounterExamplesFinder().startStrategy1(currentGraph);
-						if (CounterExamplesFinder.foundCounterEx) {
-							sendCounterEx();
+						counterExFinder.startStrategy1(currentGraph);
+						if (counterExFinder.foundCounterEx) {
+							sendCounterEx(counterExFinder);
 						} else {
 							// status message
 							msgToServer.setMessage("STATUS");
@@ -72,13 +74,13 @@ public class Client implements Runnable {
 				}
 			} else {
 				// no new message, so continue working
-				new CounterExamplesFinder().startStrategy1(currentGraph);
+				counterExFinder.startStrategy1(currentGraph);
 				// if a counter example is found...
-				if (CounterExamplesFinder.foundCounterEx) {
+				if (counterExFinder.foundCounterEx) {
 					msgToServer.setMessage("COUNTEREXAMPLE");
 					msgToServer.setGraph(currentGraph);
 					// reset the counterexample flag
-					CounterExamplesFinder.foundCounterEx = false;
+					counterExFinder.foundCounterEx = false;
 				} else {
 					// status message
 					msgToServer.setMessage("STATUS");
