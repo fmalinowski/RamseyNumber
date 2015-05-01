@@ -11,7 +11,7 @@ public class Client implements Runnable {
 
 	public static boolean isStale = true;
 	public static Message currentMsgFromServer;
-	public static Message msgToServer;
+	public static Message msgToServer = new Message();
 	private CounterExamplesFinder counterExFinder;
 	private GraphWithInfos currentGraph;
 	private DatagramSocket clientSocket;
