@@ -16,8 +16,14 @@ public class Client implements Runnable {
 	private boolean hasCounterE = false;
 	private GraphWithInfos currentGraph;
 	private DatagramSocket clientSocket;
-	private int port = 9876;
+	private int port;
+	private String host;
 
+	public Client(int inPort, String inHost) {
+		port = inPort;
+		host = inHost;
+	}
+	
 	public void sendCounterEx(CounterExamplesFinder cE) {
 		msgToServer.setMessage("COUNTEREXAMPLE");
 		msgToServer.setGraph(currentGraph);
@@ -29,7 +35,7 @@ public class Client implements Runnable {
 
 		try {
 			counterExFinder = new CounterExamplesFinder();
-			InetAddress IPAddress = InetAddress.getByName("localhost");
+			InetAddress IPAddress = InetAddress.getByName(host);
 			clientSocket = new DatagramSocket();
 			// initial message
 			msgToServer.setMessage("READY");
