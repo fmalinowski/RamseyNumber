@@ -20,7 +20,7 @@ public class Scheduler {
 	 * 
 	 * @return the first graph that should be computed by the client.
 	 */
-	public GraphWithInfos getNewTask() {
+	public synchronized GraphWithInfos getNewTask() {
 		GraphWithInfos graphForClient;
 		LinkedList<GraphWithInfos> counterExamples;
 		int maxCounterExampleSize, maxGraphBeingComputedSize;
@@ -57,7 +57,7 @@ public class Scheduler {
 	 * 
 	 * @return the new graph that should be computed by the client
 	 */
-	public GraphWithInfos processFoundCounterExample(GraphWithInfos graphFromClient) {
+	public synchronized GraphWithInfos processFoundCounterExample(GraphWithInfos graphFromClient) {
 		// Store Counter Example
 		// Get graph Max Size of Counter Examples and get graph being computed
 		// with lowest
@@ -78,7 +78,7 @@ public class Scheduler {
 	 *         otherwise it returns the new graph that should be computed by the
 	 *         client
 	 */
-	public GraphWithInfos processStatusUpdateFromClient(GraphWithInfos graphFromClient) {
+	public synchronized GraphWithInfos processStatusUpdateFromClient(GraphWithInfos graphFromClient) {
 		// Store Graph being Computed
 		// Get graph Max Size of Counter Examples and get graph being computed
 		// with lowest
