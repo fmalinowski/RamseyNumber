@@ -58,7 +58,7 @@ public class Graph implements Serializable {
 		return output;
 	}
 	
-	// Copy the old graph into the new one and leave empty the last rows and last columns
+	// Copy the old graph into the new one and randomize the last rows and last columns
 	public Graph copyGraph(int newGraphSize) {
 		Graph newGraph;
 		
@@ -85,5 +85,37 @@ public class Graph implements Serializable {
 	
 	public int getGraphID() {
 		return this.graph.hashCode();
+	}
+
+
+	public Pair<Integer,Integer> getRandomCoordInUpperTriangle()
+	{
+		int n = getSizeUpperTriangle();
+		Random rn = new Random();
+		int r = rn.nextInt(n);
+		//translate random number to i,j
+		int i,j;
+		i = 0;
+		j = 1;
+		while(r > 0)
+		{
+			j++;
+			if(j >= size)
+			{
+				i++;
+				j=i+1;
+			}
+			r--;
+		}
+		return new Pair<Integer,Integer>(i,j);
+	}
+
+	/**
+	 * n=(n*(n+1))/2 but n needs to be n-1
+	 * @return
+	 */
+	protected int getSizeUpperTriangle()
+	{
+		return (size-1)*(size)/2;
 	}
 }
