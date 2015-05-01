@@ -43,6 +43,9 @@ public class ClientMessenger implements Runnable {
 				System.out.println("From Server: "
 						+ messageFromServer.getMessage());
 				
+				// mark message as unread
+				Client.isStale = false;
+				
 				// wait for 30s before doing it again (arbitrary)
 				Thread.sleep(30000);
 			} catch (Exception e) {
