@@ -34,6 +34,8 @@ public class ServerResponder implements Runnable {
 		receivedBytes = this.packet.getData();
 		messageFromClient = Message.deserialize(receivedBytes);
 		
+		System.out.println("Got a Message");
+		
 		messageForClient = this.getNewTaskForClient(messageFromClient);
 		bytesToSend = messageForClient.serialize();
 		this.sendMessage(bytesToSend);
@@ -71,20 +73,27 @@ public class ServerResponder implements Runnable {
 		graphFromClient = messageFromClient.getGraph();
 		
 		if (messageFromClient.getMessage().equals("READY")) {
+			System.out.println("GOT A READY MESSAGE");
 			graphForClient = this.scheduler.getNewTask();
+			System.out.println("-> sending NEWGRAPH message");
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
+			System.out.println("GOT A COUNTER EXAMPLE MESSAGE");
 			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
+			System.out.println("-> sending NEWGRAPH message");
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
+			System.out.println("GOT A STATUS MESSAGE");
 			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
 			
 			if (graphForClient == null) {
+				System.out.println("-> sending CONTINUE message");
 				answerForClient.setMessage("CONTINUE");
 			}
 			else {
+				System.out.println("-> sending NEWGRAPH message");
 				answerForClient.setMessage("NEWGRAPH");
 			}
 		}

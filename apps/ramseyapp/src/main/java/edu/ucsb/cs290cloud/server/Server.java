@@ -42,8 +42,11 @@ public class Server implements Runnable {
 			buffer = new byte[BUFFER_SIZE];
 			packet = new DatagramPacket(buffer, buffer.length);
 			
+			System.out.println("WAITING FOR PACKET");
+			
 			try {
 				this.serverSocket.receive(packet);
+				System.out.println("udp Packet Received!");
 				new Thread(new ServerResponder(this.serverSocket, packet, this.scheduler)).start();
 			} catch (Exception e) {
 				e.printStackTrace();
