@@ -43,6 +43,12 @@ public class GraphsExplorer {
 		graph.setStatus(GraphWithInfos.Status.COUNTER_EXAMPLE_SAVED);
 		
 		this.addCounterExampleToList(listCounterExamples, graph);
+		
+		System.out.println("----------------------");
+		System.out.println("GOT A COUNTER EXAMPLE!");
+		System.out.println("Size: " + graph.size());
+		System.out.println(graph.printGraph());
+		System.out.println("----------------------");
 	}
 	
 	/**
@@ -62,6 +68,13 @@ public class GraphsExplorer {
 		graph.setStatus(GraphWithInfos.Status.BEING_COMPUTED);
 		
 		this.addGraphBeingComputedToListAndKeepBestCounts(listGraphsBeingComputed, graph);
+		
+		System.out.println("----------------------");
+		System.out.println("GRAPH BC");
+		System.out.println("Size: " + graph.size());
+		System.out.println("BestCount: " + graph.getBestCount());
+		System.out.println(graph.printGraph());
+		System.out.println("----------------------");
 	}
 	
 	public int getMaxCounterExamplesSize() {
