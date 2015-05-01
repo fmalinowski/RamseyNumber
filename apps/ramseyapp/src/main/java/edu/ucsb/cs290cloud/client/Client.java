@@ -35,12 +35,12 @@ public class Client implements Runnable {
 
 		try {
 			counterExFinder = new CounterExamplesFinder();
-			InetAddress IPAddress = InetAddress.getByName(host);
+			InetAddress serverIPAddress = InetAddress.getByName(host);
 			clientSocket = new DatagramSocket();
 			// initial message
 			msgToServer.setMessage("READY");
 			new Thread(new ClientMessenger(msgToServer, clientSocket,
-					IPAddress, port)).start();
+					serverIPAddress, port)).start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
