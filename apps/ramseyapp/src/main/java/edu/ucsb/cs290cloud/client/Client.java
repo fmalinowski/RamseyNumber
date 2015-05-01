@@ -13,7 +13,6 @@ public class Client implements Runnable {
 	public static Message currentMsgFromServer;
 	public static Message msgToServer;
 	private CounterExamplesFinder counterExFinder;
-	private boolean hasCounterE = false;
 	private GraphWithInfos currentGraph;
 	private DatagramSocket clientSocket;
 	private int port;

@@ -7,7 +7,7 @@ public class CounterExamplesFinder {
 	public static final int TABOO_SIZE = 500;
 	public static final int MAX_GRAPH_SIZE = 102;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
-	public static boolean foundCounterEx = false;
+	public boolean foundCounterEx = false;
 	
 	public void startStrategy1(Graph graph) {
 		int graphSize, cliquesCount, bestCliquesCount, newValue;
