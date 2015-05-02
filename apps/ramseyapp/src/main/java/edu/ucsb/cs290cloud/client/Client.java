@@ -9,88 +9,82 @@ import edu.ucsb.cs290cloud.standalone.CounterExamplesFinder;
 
 public class Client implements Runnable {
 
-	public static boolean isStale = true;
-	public static Message currentMsgFromServer;
-	public static Message msgToServer = new Message();
-	private CounterExamplesFinder counterExFinder;
-	private GraphWithInfos currentGraph;
-	private DatagramSocket clientSocket;
+	private InetAddress serverIPAddress;
 	private int port;
 	private String host;
+	private DatagramSocket clientSocket;
+	private DatagramPacket receivePacket;
+	private Message messageToServer, messageFromServer;
+	private byte[] receivedBytes, bytesToSend;
+	private Thread CEFT;
+	private ClientCounterEx CEF = new ClientCounterEx();
 
 	public Client(int inPort, String inHost) {
 		port = inPort;
 		host = inHost;
 	}
-	
-	public void sendCounterEx(CounterExamplesFinder cE) {
-		msgToServer.setMessage("COUNTEREXAMPLE");
-		msgToServer.setGraph(currentGraph);
-		// reset the counterexample flag
-		cE.foundCounterEx = false;
-	}
 
 	public void run() {
 
 		try {
-			counterExFinder = new CounterExamplesFinder();
-			InetAddress serverIPAddress = InetAddress.getByName(host);
+			serverIPAddress = InetAddress.getByName(host);
 			clientSocket = new DatagramSocket();
-			// initial message
-			msgToServer.setMessage("READY");
-			new Thread(new ClientMessenger(msgToServer, clientSocket,
-					serverIPAddress, port)).start();
+			sendMessage("READY", null);
+			Thread CEFT = new Thread(CEF);
+			CEFT.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		while (true) {
-			// if new msg is available
-			if (!isStale) {
-				try {
-					// read server response and then process
-					if (currentMsgFromServer.getMessage() == "NEWGRAPH") {
-						currentGraph = currentMsgFromServer.getGraph();
-						// run strategy w/ the graph
-						counterExFinder.startStrategy1(currentGraph);
+			try {
+				String status = CEF.getStatus();
+				GraphWithInfos graph = CEF.getGraph();
 
-						// if a counter example is found...
-						if (counterExFinder.foundCounterEx) {
-							sendCounterEx(counterExFinder);
-						} else {
-							// status message
-							msgToServer.setMessage("STATUS");
-						}
-
-					} else if (currentMsgFromServer.getMessage() == "CONTINUE") {
-
-						counterExFinder.startStrategy1(currentGraph);
-						if (counterExFinder.foundCounterEx) {
-							sendCounterEx(counterExFinder);
-						} else {
-							// status message
-							msgToServer.setMessage("STATUS");
-						}
+				if (graph != null) {
+					sendMessage(status, graph);
+					receiveMessage();
+					if (messageFromServer.getMessage() == "NEWGRAPH") {
+						CEFT.stop();
+						GraphWithInfos receivedGraph = messageFromServer
+								.getGraph();
+						CEF.setNewGraph(receivedGraph);
+						CEFT = new Thread(CEF);
+						CEFT.start();
 					}
-					// set stale flag to true
-					isStale = true;
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
-			} else {
-				// no new message, so continue working
-				counterExFinder.startStrategy1(currentGraph);
-				// if a counter example is found...
-				if (counterExFinder.foundCounterEx) {
-					msgToServer.setMessage("COUNTEREXAMPLE");
-					msgToServer.setGraph(currentGraph);
-					// reset the counterexample flag
-					counterExFinder.foundCounterEx = false;
-				} else {
-					// status message
-					msgToServer.setMessage("STATUS");
-				}
+				Thread.sleep(10000);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		}
+	}
+
+	private void sendMessage(String status, GraphWithInfos graph) {
+
+		try {
+			messageToServer = new Message();
+			messageToServer.setMessage(status);
+			messageToServer.setGraph(graph);
+			bytesToSend = messageToServer.serialize();
+			DatagramPacket sendPacket = new DatagramPacket(bytesToSend,
+					bytesToSend.length, serverIPAddress, port);
+			clientSocket.send(sendPacket);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void receiveMessage() {
+		try {
+			receivedBytes = new byte[65507];
+			receivePacket = new DatagramPacket(receivedBytes,
+					receivedBytes.length);
+			clientSocket.receive(receivePacket);
+			receivedBytes = receivePacket.getData();
+			messageFromServer = Message.deserialize(receivedBytes);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
