@@ -11,17 +11,17 @@ public class ClientCounterEx implements Runnable {
 	public static final int MAX_GRAPH_SIZE = 102;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
 	public boolean foundCounterEx = false;
-	private Graph bestGraph = null;
-	private Graph currentGraph = null;
+	private GraphWithInfos bestGraph = null;
+	private GraphWithInfos currentGraph = null;
 
-	public void clientCounterExFinder(Graph graph) {
+	public void clientCounterExFinder(GraphWithInfos graph) {
 		int graphSize, cliquesCount, bestCliquesCount, newValue;
 		int best_i, best_j;
 		FIFOEdge fifoEdge;
 
 		if (null == graph) {
 			graphSize = 8;
-			graph = new Graph(graphSize);
+			graph = new GraphWithInfos(graphSize);
 		}
 
 		fifoEdge = new FIFOEdge(TABOO_SIZE);
@@ -110,7 +110,7 @@ public class ClientCounterEx implements Runnable {
 	}
 
 	public GraphWithInfos getGraph() {
-		return (GraphWithInfos) bestGraph;
+		return bestGraph;
 	}
 
 	public void setNewGraph(GraphWithInfos graph) {
