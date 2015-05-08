@@ -24,6 +24,7 @@ public class GraphDaoParse implements GraphDao {
     public GraphDaoParse(){
         Parse.initialize(APP_ID, APP_REST_API_ID);
     }
+
     public void storeGraph(Graph graph){
         int size = graph.size();
         ParseObject o = new ParseObject(GRAPH_CLASSNAME);
@@ -38,6 +39,7 @@ public class GraphDaoParse implements GraphDao {
         }
 
     }
+
     public Graph getLatestGraph(){
         ParseQuery<ParseObject> q = ParseQuery.getQuery(GRAPH_CLASSNAME);
         q.orderByDescending(SIZE_COLUMN);
@@ -45,7 +47,8 @@ public class GraphDaoParse implements GraphDao {
         try{
             List<ParseObject> l = q.find();
             ParseObject o = l.get(0);
-            System.out.print(o.getString(DATA_COLUMN));
+            Graph graph = new Graph(o.getString(DATA_COLUMN), o.getInt(SIZE_COLUMN));
+            return graph;
         }
         catch (ParseException e)
         {

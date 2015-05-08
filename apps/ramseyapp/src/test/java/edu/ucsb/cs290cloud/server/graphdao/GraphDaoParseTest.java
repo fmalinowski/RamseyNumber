@@ -14,16 +14,16 @@ public class GraphDaoParseTest {
     public void testSave()
     {
         GraphDaoParse parse = new GraphDaoParse();
-        Graph g = new Graph(3);
+        Graph g = new Graph(13);
         parse.storeGraph(g);
     }
 
     @Test
     public void testGetLatestGraph()
     {
-        System.out.println("Test getGraph");
         GraphDaoParse parse = new GraphDaoParse();
-        parse.getLatestGraph();
+        Graph g = parse.getLatestGraph();
+        System.out.println(g.printGraph());
     }
 }
 
