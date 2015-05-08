@@ -30,6 +30,7 @@ public class Client implements Runnable {
 			serverIPAddress = InetAddress.getByName(host);
 			clientSocket = new DatagramSocket();
 			sendMessage("READY", null);
+			receiveMessage();
 			Thread CEFT = new Thread(CEF);
 			CEFT.start();
 		} catch (Exception e) {
@@ -45,6 +46,7 @@ public class Client implements Runnable {
 					sendMessage(status, graph);
 					receiveMessage();
 					if (messageFromServer.getMessage() == "NEWGRAPH") {
+						CEF.firstCounterEx = true;
 						CEFT.stop();
 						GraphWithInfos receivedGraph = messageFromServer
 								.getGraph();
