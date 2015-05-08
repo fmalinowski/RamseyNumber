@@ -11,6 +11,7 @@ public class ClientCounterEx implements Runnable {
 	public static final int MAX_GRAPH_SIZE = 102;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
 	public boolean foundCounterEx = false;
+	public boolean firstCounterEx = true;
 	private GraphWithInfos bestGraph = null;
 	private GraphWithInfos currentGraph = null;
 
@@ -104,7 +105,8 @@ public class ClientCounterEx implements Runnable {
 	}
 
 	public String getStatus() {
-		if(foundCounterEx) {
+		if(foundCounterEx & firstCounterEx) {
+			firstCounterEx = false;
 			return "COUNTEREXAMPLE";
 		} else return "STATUS";
 	}

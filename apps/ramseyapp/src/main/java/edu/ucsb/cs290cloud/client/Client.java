@@ -30,6 +30,7 @@ public class Client implements Runnable {
 			serverIPAddress = InetAddress.getByName(host);
 			clientSocket = new DatagramSocket();
 			sendMessage("READY", null);
+			receiveMessage();
 			Thread CEFT = new Thread(CEF);
 			CEFT.start();
 		} catch (Exception e) {
@@ -45,6 +46,7 @@ public class Client implements Runnable {
 					sendMessage(status, graph);
 					receiveMessage();
 					if (messageFromServer.getMessage() == "NEWGRAPH") {
+						CEF.firstCounterEx = true;
 						CEFT.stop();
 						GraphWithInfos receivedGraph = messageFromServer
 								.getGraph();
@@ -61,7 +63,14 @@ public class Client implements Runnable {
 	}
 
 	private void sendMessage(String status, GraphWithInfos graph) {
-
+		System.out.println("--------------------");
+		System.out.println("-> sending " + status);
+		if (graph != null) {
+			System.out.println("Size: " + graph.size());
+			System.out.println(graph.printGraph());
+		}
+		System.out.println("--------------------");
+		
 		try {
 			messageToServer = new Message();
 			messageToServer.setMessage(status);
@@ -83,6 +92,13 @@ public class Client implements Runnable {
 			clientSocket.receive(receivePacket);
 			receivedBytes = receivePacket.getData();
 			messageFromServer = Message.deserialize(receivedBytes);
+			System.out.println("--------------------");
+			System.out.println("receive " + messageFromServer.getMessage());
+			if (messageFromServer.getGraph() != null) {
+				System.out.println("Size: " + messageFromServer.getGraph().size());
+				System.out.println(messageFromServer.getGraph().printGraph());
+			}
+			System.out.println("--------------------");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
