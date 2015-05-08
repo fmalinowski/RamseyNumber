@@ -44,18 +44,23 @@ public class Graph implements Serializable {
 	public int[][] getRawGraph() {
 		return this.graph;
 	}
-	
+
 	public String printGraph() {
 		String output = "Size: " + this.size + "\n";
-		
+		output += getGraphDataString();
+		return output;
+	}
+
+	public String getGraphDataString() {
+		StringBuilder output = new StringBuilder();
 		for (int i = 0; i < this.size; i++) {
 			for (int j = 0; j < this.size; j++) {
-				output += this.graph[i][j] + " ";
+				output.append(this.graph[i][j] + " ");
 			}
-			output += "\n";
+			output.append("\n");
 		}
-		
-		return output;
+
+		return output.toString();
 	}
 	
 	// Copy the old graph into the new one and randomize the last rows and last columns
