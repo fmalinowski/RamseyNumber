@@ -1,6 +1,8 @@
 package edu.ucsb.cs290cloud.standalone;
 
+import java.io.BufferedReader;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.util.Random;
 
 public class Graph implements Serializable {
@@ -23,6 +25,34 @@ public class Graph implements Serializable {
 	{
 		size = graph.length;
 		this.graph = graph;
+	}
+
+	public Graph(String graphString, int size)
+	{
+		this.size = size;
+		graph = new int[size][size];
+		int i,j;
+		i=j=0;
+		for(int k=0; k<graphString.length();k++ )
+		{
+			switch (graphString.charAt(k))
+			{
+				case '1':
+					graph[i][j] = 1;
+					j++;
+					break;
+				case '0':
+					graph[i][j] = 0;
+					j++;
+					break;
+				case '\n':
+					i++;
+					j=0;
+					break;
+				default:
+					break;
+			}
+		}
 	}
 	
 	public int size() {
@@ -122,5 +152,27 @@ public class Graph implements Serializable {
 	protected int getSizeUpperTriangle()
 	{
 		return (size-1)*(size)/2;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Graph))
+			return false;
+		if (obj == this)
+			return true;
+
+		Graph compare = (Graph) obj;
+		if(size != compare.size())
+			return false;
+
+		for(int i=0;i<size;i++)
+		{
+			for(int j=0;j<size;j++)
+			{
+				if(graph[i][j] != compare.getValue(i,j))
+					return false;
+			}
+		}
+		return true;
 	}
 }
