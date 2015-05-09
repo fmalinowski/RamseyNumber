@@ -12,19 +12,21 @@ public class ClientCounterEx implements Runnable {
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
 	public boolean foundCounterEx = false;
 	public boolean firstCounterEx = true;
-	private GraphWithInfos bestGraph = null;
 	private GraphWithInfos currentGraph = null;
+	private GraphWithInfos bestGraph = null;
 
-	public void clientCounterExFinder(GraphWithInfos graph) {
+	private void clientCounterExFinder(GraphWithInfos graph) {
 		int graphSize, cliquesCount, bestCliquesCount, newValue;
 		int best_i, best_j;
 		FIFOEdge fifoEdge;
 
-		if (null == graph) {
-			graphSize = 8;
-			graph = new GraphWithInfos(graphSize);
-		}
+//		if (null == graph) {
+//			graphSize = 8;
+//			graph = new GraphWithInfos(graphSize);
+//		}
 
+		System.out.println("entered graph size" + graph.size());
+		
 		fifoEdge = new FIFOEdge(TABOO_SIZE);
 		best_i = -1;
 		best_j = -1;
@@ -47,6 +49,7 @@ public class ClientCounterEx implements Runnable {
 				bestGraph = graph;
 				// Reset the taboo list for the enw graph
 				fifoEdge.resetFIFO();
+				return;
 			} else {
 				// We flip an edge, record the new count and unflip the edge.
 				// We'll remember the best flip and keep it next time
@@ -105,8 +108,8 @@ public class ClientCounterEx implements Runnable {
 	}
 
 	public String getStatus() {
-		if(foundCounterEx & firstCounterEx) {
-			firstCounterEx = false;
+		if(foundCounterEx) {
+//			firstCounterEx = false;
 			return "COUNTEREXAMPLE";
 		} else return "STATUS";
 	}
@@ -117,5 +120,6 @@ public class ClientCounterEx implements Runnable {
 
 	public void setNewGraph(GraphWithInfos graph) {
 		currentGraph = graph;
+		System.out.println("Current graph\n"+currentGraph);
 	}
 }
