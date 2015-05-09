@@ -90,7 +90,7 @@ public class Scheduler {
 		
 		// If best graph being computed is the one just committed by the client,
 		// the client will continue on his graph.
-		if (newGraphForClient == graphFromClient) {
+		if (newGraphForClient.equals(graphFromClient)) {
 			return null;
 		}
 		else {
