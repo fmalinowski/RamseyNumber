@@ -31,7 +31,8 @@ public class Client implements Runnable {
 			clientSocket = new DatagramSocket();
 			sendMessage("READY", null);
 			receiveMessage();
-			Thread CEFT = new Thread(CEF);
+			CEF.setNewGraph(messageFromServer.getGraph());
+			CEFT = new Thread(CEF);
 			CEFT.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,16 +46,20 @@ public class Client implements Runnable {
 				if (graph != null) {
 					sendMessage(status, graph);
 					receiveMessage();
-					if (messageFromServer.getMessage() == "NEWGRAPH") {
-						CEF.firstCounterEx = true;
+					System.out.println(messageFromServer.getMessage());
+					if (messageFromServer.getMessage().equals("NEWGRAPH")) {
+						System.out.println("ng");
+						// CEF.firstCounterEx = true;
 						CEFT.stop();
-						GraphWithInfos receivedGraph = messageFromServer
-								.getGraph();
-						CEF.setNewGraph(receivedGraph);
+						System.out.println("getGraph"
+								+ messageFromServer.getGraph().printGraph());
+						CEF.setNewGraph(messageFromServer.getGraph());
+						// CEF.setNewGraph(receivedGraph);
 						CEFT = new Thread(CEF);
 						CEFT.start();
 					}
 				}
+
 				Thread.sleep(10000);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -70,7 +75,7 @@ public class Client implements Runnable {
 			System.out.println(graph.printGraph());
 		}
 		System.out.println("--------------------");
-		
+
 		try {
 			messageToServer = new Message();
 			messageToServer.setMessage(status);
@@ -95,7 +100,8 @@ public class Client implements Runnable {
 			System.out.println("--------------------");
 			System.out.println("receive " + messageFromServer.getMessage());
 			if (messageFromServer.getGraph() != null) {
-				System.out.println("Size: " + messageFromServer.getGraph().size());
+				System.out.println("Size: "
+						+ messageFromServer.getGraph().size());
 				System.out.println(messageFromServer.getGraph().printGraph());
 			}
 			System.out.println("--------------------");
