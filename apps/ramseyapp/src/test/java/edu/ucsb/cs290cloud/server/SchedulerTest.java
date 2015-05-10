@@ -418,4 +418,45 @@ public class SchedulerTest {
 		PowerMock.verifyAll();
 	}
 
+	
+	@Test
+	public void testProcessStatusUpdateFromClient_whenBestGraphBeingComputedSavedIsNotEqualToGraphSubmittedByClient() {
+		GraphsExplorer graphsExplorerMock;
+		Scheduler scheduler;
+		GraphWithInfos graphFromClient, differentBestGraphAlreadySaved, answerGraph;
+		
+		graphFromClient = GraphFactory.generateRandomGraph(4);
+		differentBestGraphAlreadySaved = graphFromClient.clone();
+		differentBestGraphAlreadySaved.flipValue(2, 1);
+		
+		// CONFIGURE THE MOCK
+		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
+		try {
+			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
+		
+		graphsExplorerMock.getMaxCounterExamplesSize();
+		PowerMock.expectLastCall().andReturn(3);
+		
+		graphsExplorerMock.getMaxGraphBeingComputedSize();
+		PowerMock.expectLastCall().andReturn(4);
+		
+		graphsExplorerMock.getGraphBeingComputedWithLowestBestCount(4);
+		PowerMock.expectLastCall().andReturn(differentBestGraphAlreadySaved);
+		
+		PowerMock.replayAll();
+		
+		// TEST
+		scheduler = new Scheduler();
+		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
+		
+		assertEquals(differentBestGraphAlreadySaved, answerGraph);
+		
+		// MAKE SURE ALL THE EXPECTED CALLS WERE MADE
+		PowerMock.verifyAll();
+	}
 }

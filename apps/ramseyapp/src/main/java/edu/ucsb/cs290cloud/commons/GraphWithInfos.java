@@ -16,7 +16,7 @@ public class GraphWithInfos extends Graph {
 	}
 	
 	private int parentGraphID;
-	private int bestCount;
+	private int bestCount = 9999999;
 	private int graphID;
 	private Status status; 
 	private int timeSpentOnBestCount;
@@ -107,5 +107,41 @@ public class GraphWithInfos extends Graph {
 		}
 
 		return newGraph;
+	}
+	
+	public GraphWithInfos clone() {
+		GraphWithInfos newGraph;
+		
+		newGraph = new GraphWithInfos(this.size());
+		for(int i = 0; i < this.size(); i++) {
+			for(int j = 0; j < this.size(); j++) {
+				newGraph.setValue(i, j, this.getValue(i, j));
+			}
+		}
+		
+		newGraph.parentGraphID = this.parentGraphID;
+		newGraph.bestCount = this.bestCount;
+		newGraph.graphID = this.graphID;
+		newGraph.status = this.status;
+		newGraph.timeSpentOnBestCount = this.timeSpentOnBestCount;
+		newGraph.strategyUsed = this.strategyUsed;
+		
+		return newGraph;
+	}
+	
+	public Boolean equals(GraphWithInfos otherGraph) {
+		if (this.size() != otherGraph.size()) {
+			return false;
+		}
+		
+		for(int i = 0; i < this.size(); i++) {
+			for(int j = 0; j < this.size(); j++) {
+				if (this.getValue(i, j) != otherGraph.getValue(i, j)) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 }

@@ -68,6 +68,39 @@ public class GraphsExplorerTest {
 	}
 	
 	@Test
+	public void testAddGraphToListAndKeepBestCounts_whenMultipleBestGraphs() {
+		GraphsExplorer graphsExplorer;
+		LinkedList<GraphWithInfos> graphsList;
+		GraphWithInfos graph1, graph2, graph3, graph4, graph5, graph6;
+		
+		graph1 = new GraphWithInfos(2);
+		graph2 = new GraphWithInfos(2);
+		graph3 = new GraphWithInfos(2);
+		graph4 = new GraphWithInfos(2);
+		graph5 = new GraphWithInfos(2);
+		graph6 = new GraphWithInfos(2);
+		
+		graph1.setBestCount(2);
+		graph2.setBestCount(2);
+		graph3.setBestCount(2);
+		graphsList = new LinkedList<GraphWithInfos>();
+		
+		graphsExplorer = new GraphsExplorer();		
+		
+		graphsExplorer.addGraphBeingComputedToListAndKeepBestCounts(graphsList, graph1);
+		assertEquals(graph1, graphsList.get(0));
+		
+		graphsExplorer.addGraphBeingComputedToListAndKeepBestCounts(graphsList, graph2);
+		assertEquals(graph1, graphsList.get(0));
+		assertEquals(graph2, graphsList.get(1));
+		
+		graphsExplorer.addGraphBeingComputedToListAndKeepBestCounts(graphsList, graph3);
+		assertEquals(graph1, graphsList.get(0));
+		assertEquals(graph2, graphsList.get(1));
+		assertEquals(graph3, graphsList.get(2));
+	}
+	
+	@Test
 	public void testAddCounterExampleToList() {
 		GraphsExplorer graphsExplorer;
 		LinkedList<GraphWithInfos> graphsList;

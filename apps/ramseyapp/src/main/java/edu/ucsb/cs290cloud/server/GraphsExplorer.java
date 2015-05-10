@@ -44,11 +44,13 @@ public class GraphsExplorer {
 		
 		this.addCounterExampleToList(listCounterExamples, graph);
 		
+		// BEGIN OF DEBUG PRINTS AREA
 		System.out.println("----------------------");
 		System.out.println("GOT A COUNTER EXAMPLE!");
 		System.out.println("Size: " + graph.size());
 		System.out.println(graph.printGraph());
 		System.out.println("----------------------");
+		// END OF DEBUG PRINTS AREA
 	}
 	
 	/**
@@ -70,7 +72,7 @@ public class GraphsExplorer {
 		this.addGraphBeingComputedToListAndKeepBestCounts(listGraphsBeingComputed, graph);
 		
 		System.out.println("----------------------");
-		System.out.println("GRAPH BC");
+		System.out.println("GRAPH Being Computed");
 		System.out.println("Size: " + graph.size());
 		System.out.println("BestCount: " + graph.getBestCount());
 		System.out.println(graph.printGraph());
@@ -120,7 +122,8 @@ public class GraphsExplorer {
 		int index = 0;
 		
 		for (index = 0; index < graphsList.size(); index++) {
-			if (graphsList.get(index).getBestCount() > graph.getBestCount()) {
+			// We add at the end of the list even if best count is same
+			if (graphsList.get(index).getBestCount() >= graph.getBestCount()) {
 				break;
 			}
 		}
