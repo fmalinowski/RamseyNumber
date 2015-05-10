@@ -57,7 +57,7 @@ public class Strategy1 extends Strategy {
 						// We check if number of cliques decreased: it's a good
 						// thing
 						cliquesCount = new CliqueCounter(graph.getRawGraph())
-								.getMonochromaticSubcliquesCount();
+								.getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
 
 						if ((cliquesCount < bestCliquesCount)
 								&& !fifoEdge.findEdge(i, j)) {
