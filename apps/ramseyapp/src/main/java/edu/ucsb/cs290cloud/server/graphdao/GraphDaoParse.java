@@ -1,11 +1,10 @@
 package edu.ucsb.cs290cloud.server.graphdao;
 
-import edu.ucsb.cs290cloud.standalone.Graph;
+import edu.ucsb.cs290cloud.commons.Graph;
 import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
 import org.parse4j.ParseQuery;
-import org.parse4j.util.ParseRegistry;
 
 import java.util.List;
 

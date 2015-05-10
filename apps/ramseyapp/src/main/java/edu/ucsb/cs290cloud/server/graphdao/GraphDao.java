@@ -1,6 +1,6 @@
 package edu.ucsb.cs290cloud.server.graphdao;
 
-import edu.ucsb.cs290cloud.standalone.Graph;
+import edu.ucsb.cs290cloud.commons.Graph;
 
 /**
  * Created by ethan_000 on 5/7/2015.

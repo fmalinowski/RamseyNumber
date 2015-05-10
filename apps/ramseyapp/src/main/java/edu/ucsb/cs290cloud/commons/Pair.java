@@ -1,4 +1,4 @@
-package edu.ucsb.cs290cloud.standalone;
+package edu.ucsb.cs290cloud.commons;
 /**
  * Created by ethan_000 on 5/1/2015.
  * taken from http://stackoverflow.com/questions/5303539/didnt-java-once-have-a-pair-class

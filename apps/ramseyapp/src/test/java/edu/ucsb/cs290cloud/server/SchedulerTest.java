@@ -2,7 +2,6 @@
 
 import static org.junit.Assert.*;
 
-import java.net.DatagramPacket;
 import java.util.LinkedList;
 
 import org.easymock.EasyMock;
@@ -11,12 +10,10 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.commons.Message;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
-import edu.ucsb.cs290cloud.standalone.GraphFactory;
+import edu.ucsb.cs290cloud.commons.GraphFactory;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Scheduler.class}) // Class that creates the new instance of GraphsExplorer and that we want to mock

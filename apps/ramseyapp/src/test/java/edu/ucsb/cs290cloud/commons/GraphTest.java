@@ -1,9 +1,8 @@
-package edu.ucsb.cs290cloud.standalone;
+package edu.ucsb.cs290cloud.commons;
 
+import edu.ucsb.cs290cloud.commons.Graph;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 

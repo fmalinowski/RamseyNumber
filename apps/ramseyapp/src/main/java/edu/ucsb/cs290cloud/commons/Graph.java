@@ -1,8 +1,6 @@
-package edu.ucsb.cs290cloud.standalone;
+package edu.ucsb.cs290cloud.commons;
 
-import java.io.BufferedReader;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.util.Random;
 
 public class Graph implements Serializable {

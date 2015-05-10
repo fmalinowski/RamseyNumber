@@ -1,9 +1,6 @@
 package edu.ucsb.cs290cloud.commons;
 
-import java.io.Serializable;
 import java.util.Random;
-
-import edu.ucsb.cs290cloud.standalone.Graph;
 
 public class GraphWithInfos extends Graph {
 	

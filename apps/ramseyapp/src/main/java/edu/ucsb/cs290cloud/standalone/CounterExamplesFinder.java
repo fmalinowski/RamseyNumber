@@ -1,5 +1,7 @@
 package edu.ucsb.cs290cloud.standalone;
 
+import edu.ucsb.cs290cloud.commons.Graph;
+import edu.ucsb.cs290cloud.commons.GraphFactory;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 
 public class CounterExamplesFinder {

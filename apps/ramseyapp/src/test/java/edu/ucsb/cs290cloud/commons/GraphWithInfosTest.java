@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.ucsb.cs290cloud.standalone.GraphFactory;
-
 public class GraphWithInfosTest {
 
 	@Test

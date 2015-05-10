@@ -5,8 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.standalone.GraphFactory;
-import edu.ucsb.cs290cloud.strategies.Strategy.Status;
+import edu.ucsb.cs290cloud.commons.GraphFactory;
 
 public class StrategyTest {
 	

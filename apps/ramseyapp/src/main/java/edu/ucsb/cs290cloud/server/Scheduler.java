@@ -1,11 +1,10 @@
 package edu.ucsb.cs290cloud.server;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
-import edu.ucsb.cs290cloud.standalone.GraphFactory;
+import edu.ucsb.cs290cloud.commons.GraphFactory;
 
 public class Scheduler {
 
