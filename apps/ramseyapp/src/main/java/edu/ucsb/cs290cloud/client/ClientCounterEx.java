@@ -2,7 +2,7 @@ package edu.ucsb.cs290cloud.client;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
-import edu.ucsb.cs290cloud.standalone.FIFOEdge;
+import edu.ucsb.cs290cloud.commons.FIFOEdge;
 
 public class ClientCounterEx implements Runnable {
 

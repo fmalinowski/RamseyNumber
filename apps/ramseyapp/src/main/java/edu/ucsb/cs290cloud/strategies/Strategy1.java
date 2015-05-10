@@ -2,12 +2,12 @@ package edu.ucsb.cs290cloud.strategies;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
-import edu.ucsb.cs290cloud.standalone.FIFOEdge;
+import edu.ucsb.cs290cloud.commons.FIFOEdge;
 
 public class Strategy1 extends Strategy {
 	
 	public static final int TABOO_SIZE = 500;
-	public static final int MAX_GRAPH_SIZE = 102;
+	public static final int MAX_GRAPH_SIZE = 150;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
 	
 	@Override
