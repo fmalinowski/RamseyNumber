@@ -25,7 +25,7 @@ public class Strategy1 extends Strategy {
 
 		while (graph.size() < MAX_GRAPH_SIZE) {
 			cliquesCount = new CliqueCounter(graph.getRawGraph())
-					.getMonochromaticSubcliquesCountOriginalMethod();
+					.getMonochromaticSubcliquesCount();
 
 			// 0 subclique so we found a counter example
 			if (cliquesCount == 0) {
@@ -57,7 +57,7 @@ public class Strategy1 extends Strategy {
 						// We check if number of cliques decreased: it's a good
 						// thing
 						cliquesCount = new CliqueCounter(graph.getRawGraph())
-								.getMonochromaticSubcliquesCountOriginalMethod();
+								.getMonochromaticSubcliquesCount();
 
 						if ((cliquesCount < bestCliquesCount)
 								&& !fifoEdge.findEdge(i, j)) {
