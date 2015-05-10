@@ -1,5 +1,6 @@
 package edu.ucsb.cs290cloud.standalone;
 
+import edu.ucsb.cs290cloud.commons.FIFOEdge;
 import edu.ucsb.cs290cloud.commons.Graph;
 import edu.ucsb.cs290cloud.commons.GraphFactory;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
@@ -101,7 +102,7 @@ public class CounterExamplesFinder {
 
 		if(null==graph)
 		{
-			graphSize = 8;
+			graphSize = 70;
 			graph = new Graph(graphSize);
 		}
 
@@ -184,7 +185,7 @@ public class CounterExamplesFinder {
 
 		if(null==graph)
 		{
-			graphSize = 60;
+			graphSize = 70;
 			graph = GraphFactory.generateRandomGraph(graphSize);
 		}
 
