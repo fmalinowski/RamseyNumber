@@ -11,9 +11,11 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
+import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 import edu.ucsb.cs290cloud.standalone.GraphFactory;
 
 @RunWith(PowerMockRunner.class)
@@ -149,8 +151,20 @@ public class SchedulerTest {
 		Scheduler scheduler;
 		GraphWithInfos graphFromClient, counterExample1, counterExample2, answerGraph;
 		LinkedList<GraphWithInfos> listOfCounterExamples;
+		CliqueCounter cliqueCounterMock;
 		
 		graphFromClient = GraphFactory.generateRandomGraph(4);
+		
+		// CONFIGURE THE CLIQUE COUNTER MOCK
+		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
+		try {
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		cliqueCounterMock.getMonochromaticSubcliquesCount();
+		PowerMock.expectLastCall().andReturn(0);
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
@@ -203,8 +217,20 @@ public class SchedulerTest {
 		GraphsExplorer graphsExplorerMock;
 		Scheduler scheduler;
 		GraphWithInfos graphFromClient, graphBeingComputed, answerGraph;
+		CliqueCounter cliqueCounterMock;
 		
 		graphFromClient = GraphFactory.generateRandomGraph(4);
+		
+		// CONFIGURE THE CLIQUE COUNTER MOCK
+		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
+		try {
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+		cliqueCounterMock.getMonochromaticSubcliquesCount();
+		PowerMock.expectLastCall().andReturn(0);
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
@@ -235,6 +261,60 @@ public class SchedulerTest {
 		
 		// We make sure that the new graph contains the counterExample and is one size above
 		assertEquals(6, answerGraph.size());
+		assertEquals(graphBeingComputed, answerGraph);
+		
+		// MAKE SURE ALL THE EXPECTED CALLS WERE MADE
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public void testProcessFoundCounterExample_whenGraphIsNotCounterExample() {
+		GraphsExplorer graphsExplorerMock;
+		Scheduler scheduler;
+		GraphWithInfos graphFromClient, graphBeingComputed, answerGraph;
+		CliqueCounter cliqueCounterMock;
+		
+		graphFromClient = GraphFactory.generateRandomGraph(4);
+		
+		// CONFIGURE THE CLIQUE COUNTER MOCK
+		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
+		try {
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+						
+		cliqueCounterMock.getMonochromaticSubcliquesCount();
+		PowerMock.expectLastCall().andReturn(1);
+		
+		// CONFIGURE THE MOCK
+		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
+		try {
+			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		graphsExplorerMock.getMaxCounterExamplesSize();
+		PowerMock.expectLastCall().andReturn(3);
+		
+		graphsExplorerMock.getMaxGraphBeingComputedSize();
+		PowerMock.expectLastCall().andReturn(4);
+		
+		graphBeingComputed = new GraphWithInfos(4);
+		
+		graphsExplorerMock.getGraphBeingComputedWithLowestBestCount(4);
+		PowerMock.expectLastCall().andReturn(graphBeingComputed);
+		
+		PowerMock.replayAll();
+		
+		// TEST
+		scheduler = new Scheduler();
+		answerGraph = scheduler.processFoundCounterExample(graphFromClient);
+		
+		// We make sure that the new graph is the last graph being computed of size 4
+		// because the graph we submitted is actually not a counter example
+		assertEquals(4, answerGraph.size());
 		assertEquals(graphBeingComputed, answerGraph);
 		
 		// MAKE SURE ALL THE EXPECTED CALLS WERE MADE
