@@ -65,7 +65,7 @@ public class Strategy1Random extends Strategy {
             if(fifoEdge.getSize() >= fifoEdge.getMaxFIFOSize())
             {
                 System.out.println("Need to backtrack a little");
-                for(int k=0; k<2;k++) {
+                for(int k=0; k<1;k++) {
                     Pair<Integer, Integer> p = graph.getRandomCoord();
                     graph.flipValue(p.getElement0(), p.getElement1());
                 }
