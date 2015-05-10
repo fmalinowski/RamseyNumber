@@ -10,7 +10,7 @@ import org.junit.Test;
  * Created by ethan_000 on 5/10/2015.
  */
 public class Strategy1RandomTest {
-    @Test
+    //@Test
     public void runStrategy(){
         Strategy s = new Strategy1Random();
         s.setInitialGraph(GraphFactory.generateRandomGraph(90));
