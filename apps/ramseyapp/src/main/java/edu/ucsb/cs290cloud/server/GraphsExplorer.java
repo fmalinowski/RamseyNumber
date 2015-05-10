@@ -13,10 +13,16 @@ public class GraphsExplorer {
 
 	private HashMap<Integer, LinkedList> counterExamples;
 	private HashMap<Integer, LinkedList> graphsBeingComputed;
+	private GraphsStore graphsStore;
 	
 	public GraphsExplorer() {
 		this.counterExamples = new HashMap<Integer, LinkedList>();
 		this.graphsBeingComputed = new HashMap<Integer, LinkedList>();
+		try {
+			this.graphsStore = new GraphsStore(System.getProperty(("user.dir")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -43,6 +49,8 @@ public class GraphsExplorer {
 		graph.setStatus(GraphWithInfos.Status.COUNTER_EXAMPLE_SAVED);
 		
 		this.addCounterExampleToList(listCounterExamples, graph);
+		
+		this.graphsStore.storeCounterExample(graph);
 		
 		// BEGIN OF DEBUG PRINTS AREA
 		System.out.println("----------------------");
