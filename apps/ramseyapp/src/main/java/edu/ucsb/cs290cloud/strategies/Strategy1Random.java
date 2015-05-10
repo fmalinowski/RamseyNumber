@@ -67,6 +67,7 @@ public class Strategy1Random extends Strategy {
                         }
                         cliquesCount = new CliqueCounter(graph.getRawGraph())
                                 .getMonochromaticSubcliquesCount();
+                        fifoEdge.resetFIFO();
                     }
                 }
             }
