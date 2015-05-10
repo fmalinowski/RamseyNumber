@@ -14,7 +14,6 @@ public class Strategy1Random extends Strategy {
     @Override
     public void runStrategy() {
         int cliquesCount, bestCliquesCount;
-        int best_i, best_j;
         FIFOEdge fifoEdge;
 
         fifoEdge = new FIFOEdge(TABOO_SIZE);
@@ -49,6 +48,7 @@ public class Strategy1Random extends Strategy {
                             .getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
                     if (cliquesCount < bestCliquesCount) {
                         fifoEdge.resetFIFO();
+                        bestCliquesCount = cliquesCount;
 
                         System.out.print("Graph size: " + graph.size() + ", ");
                         System.out.print("Best count: " + bestCliquesCount + ", ");
