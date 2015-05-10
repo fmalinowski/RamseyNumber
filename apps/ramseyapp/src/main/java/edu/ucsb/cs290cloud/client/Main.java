@@ -9,8 +9,8 @@ public class Main {
 	
 	// start a client here
 	public static void main(String[] args) {
-		Client2 client;		
-		client = new Client2(PORT_DEFAULT, IP_DEFAULT, Strategy1.class);
+		Client client;		
+		client = new Client(PORT_DEFAULT, IP_DEFAULT, Strategy1.class);
 		client.run();
 	}
 }

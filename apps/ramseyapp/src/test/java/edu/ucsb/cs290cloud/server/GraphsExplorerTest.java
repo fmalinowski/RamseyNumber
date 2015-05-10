@@ -2,13 +2,45 @@ package edu.ucsb.cs290cloud.server;
 
 import static org.junit.Assert.*;
 
+import java.net.DatagramPacket;
 import java.util.LinkedList;
 
+import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+import edu.ucsb.cs290cloud.server.graphdao.GraphDaoParse;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({GraphsExplorer.class, GraphDaoParse.class}) // Class that creates the new instance and that we want to mock
 public class GraphsExplorerTest {
+	
+	private GraphDaoParse graphDaoParse;
+	
+	@Before
+	public void setUp() throws Exception {
+		this.graphDaoParse = PowerMock.createNiceMock(GraphDaoParse.class);
+		
+		try {
+			PowerMock.expectNew(GraphDaoParse.class).andReturn(this.graphDaoParse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//		PowerMock.stub(PowerMock.method(GraphDaoParse.class, "storeGraph", GraphWithInfos.class));
+		PowerMock.replay(this.graphDaoParse, GraphDaoParse.class);
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		PowerMock.verify(this.graphDaoParse);
+	}
 
 	@Test
 	public void testAddGraphToListAndKeepBestCounts() {
