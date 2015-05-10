@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 import edu.ucsb.cs290cloud.standalone.GraphFactory;
 
 public class Scheduler {
@@ -66,8 +67,13 @@ public class Scheduler {
 		// Otherwise if no graph being computed, we generate new graph that is
 		// one size bigger
 		// than the biggest counter example size
+		CliqueCounter cliqueCounter;
 		
-		this.graphsExplorer.addNewCounterExample(graphFromClient);
+		// Check if it's really a counter example before saving it as a counter example
+		cliqueCounter = new CliqueCounter(graphFromClient.getRawGraph());
+		if (cliqueCounter.getMonochromaticSubcliquesCount() == 0) {
+			this.graphsExplorer.addNewCounterExample(graphFromClient);
+		}
 		return this.getNewTask();
 	}
 
