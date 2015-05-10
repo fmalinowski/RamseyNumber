@@ -18,7 +18,7 @@ public class Strategy1Random extends Strategy {
 
         GraphWithInfos graph = this.getInitialGraph();
 
-        fifoEdge = new FIFOEdge(TABOO_SIZE);
+        fifoEdge = new FIFOEdge(graph.getSizeUpperTriangle());
 
         cliquesCount = new CliqueCounter(graph.getRawGraph())
                 .getMonochromaticSubcliquesCount();
@@ -37,7 +37,7 @@ public class Strategy1Random extends Strategy {
                 return;
             }
             else {
-                Pair<Integer, Integer> coord = graph.getRandomCoordInUpperTriangle();
+                Pair<Integer, Integer> coord = graph.getRandomCoord();
                 i = coord.getElement0();
                 j = coord.getElement1();
 
@@ -58,18 +58,21 @@ public class Strategy1Random extends Strategy {
                         graph.flipValue(i, j);//flip back
                     }
                     fifoEdge.insertEdge(i, j);
-                    if(fifoEdge.getSize() >= graph.getSizeUpperTriangle())
-                    {
-                        System.out.print("Need to backtrack a little");
-                        for(int k=0; k<3;k++) {
-                            Pair<Integer, Integer> p = graph.getRandomCoordInUpperTriangle();
-                            graph.flipValue(p.getElement0(), p.getElement1());
-                        }
-                        cliquesCount = new CliqueCounter(graph.getRawGraph())
-                                .getMonochromaticSubcliquesCount();
-                        fifoEdge.resetFIFO();
-                    }
+
                 }
+            }
+
+            if(fifoEdge.getSize() >= fifoEdge.getMaxFIFOSize())
+            {
+                System.out.println("Need to backtrack a little");
+                for(int k=0; k<2;k++) {
+                    Pair<Integer, Integer> p = graph.getRandomCoord();
+                    graph.flipValue(p.getElement0(), p.getElement1());
+                }
+                cliquesCount = new CliqueCounter(graph.getRawGraph())
+                        .getMonochromaticSubcliquesCount();
+                bestCliquesCount = cliquesCount;
+                fifoEdge.resetFIFO();
             }
 
         }

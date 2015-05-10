@@ -143,6 +143,18 @@ public class Graph implements Serializable {
 		return new Pair<Integer,Integer>(i,j);
 	}
 
+	public Pair<Integer,Integer> getRandomCoord() {
+		Random rn = new Random();
+		int i,j;
+		i=1;
+		j=0;
+		while(i>j) {
+			i = rn.nextInt(size);
+			j = rn.nextInt(size);
+		}
+		return new Pair<Integer, Integer>(i,j);
+	}
+
 	/**
 	 * n=(n*(n+1))/2 but n needs to be n-1
 	 * @return
