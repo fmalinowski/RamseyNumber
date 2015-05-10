@@ -13,7 +13,7 @@ public class Strategy1RandomTest {
     @Test
     public void runStrategy(){
         Strategy s = new Strategy1Random();
-        s.setInitialGraph(GraphFactory.generateRandomGraph(80));
+        s.setInitialGraph(GraphFactory.generateRandomGraph(90));
         s.run();
     }
 }

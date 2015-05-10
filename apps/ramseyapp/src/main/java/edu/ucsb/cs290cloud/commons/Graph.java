@@ -147,7 +147,7 @@ public class Graph implements Serializable {
 	 * n=(n*(n+1))/2 but n needs to be n-1
 	 * @return
 	 */
-	protected int getSizeUpperTriangle()
+	public int getSizeUpperTriangle()
 	{
 		return (size-1)*(size)/2;
 	}

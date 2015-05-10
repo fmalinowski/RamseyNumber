@@ -29,25 +29,34 @@ public class FIFOEdge {
 			node = (Integer) this.fifo.pop();
 			this.redBlackIndexTree.remove(node);
 		}
-		
+
 		this.fifo.add(keyForTree);
 		this.redBlackIndexTree.put(keyForTree, true);
 	}
-	
+
+	public int getSize() {
+		return redBlackIndexTree.size();
+	}
+
+	public int getMaxFIFOSize()
+	{
+		return maxFIFOSize;
+	}
+
 	public Boolean findEdge(int i, int j) {
 		int keyForTree = this.getDistanceForEdge(i, j);
-		
+
 		if (this.redBlackIndexTree.containsKey(keyForTree)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void resetFIFO() {
 		this.fifo.clear();
 		this.redBlackIndexTree.clear();
 	};
-	
+
 	private int getDistanceForEdge(int i, int j) {
 		return (i << 16) | j;
 	}

@@ -16,9 +16,9 @@ public class Strategy1Random extends Strategy {
         int cliquesCount, bestCliquesCount;
         FIFOEdge fifoEdge;
 
-        fifoEdge = new FIFOEdge(TABOO_SIZE);
-
         GraphWithInfos graph = this.getInitialGraph();
+
+        fifoEdge = new FIFOEdge(TABOO_SIZE);
 
         cliquesCount = new CliqueCounter(graph.getRawGraph())
                 .getMonochromaticSubcliquesCount();
@@ -58,6 +58,16 @@ public class Strategy1Random extends Strategy {
                         graph.flipValue(i, j);//flip back
                     }
                     fifoEdge.insertEdge(i, j);
+                    if(fifoEdge.getSize() >= graph.getSizeUpperTriangle())
+                    {
+                        System.out.print("Need to backtrack a little");
+                        for(int k=0; k<3;k++) {
+                            Pair<Integer, Integer> p = graph.getRandomCoordInUpperTriangle();
+                            graph.flipValue(p.getElement0(), p.getElement1());
+                        }
+                        cliquesCount = new CliqueCounter(graph.getRawGraph())
+                                .getMonochromaticSubcliquesCount();
+                    }
                 }
             }
 
