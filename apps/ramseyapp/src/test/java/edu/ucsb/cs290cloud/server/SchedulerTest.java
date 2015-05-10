@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
@@ -157,7 +158,7 @@ public class SchedulerTest {
 		// CONFIGURE THE CLIQUE COUNTER MOCK
 		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
 		try {
-			PowerMock.expectNew(CliqueCounter.class, graphFromClient.getRawGraph()).andReturn(cliqueCounterMock);
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -223,7 +224,7 @@ public class SchedulerTest {
 		// CONFIGURE THE CLIQUE COUNTER MOCK
 		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
 		try {
-			PowerMock.expectNew(CliqueCounter.class, graphFromClient.getRawGraph()).andReturn(cliqueCounterMock);
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -278,7 +279,7 @@ public class SchedulerTest {
 		// CONFIGURE THE CLIQUE COUNTER MOCK
 		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
 		try {
-			PowerMock.expectNew(CliqueCounter.class, graphFromClient.getRawGraph()).andReturn(cliqueCounterMock);
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
