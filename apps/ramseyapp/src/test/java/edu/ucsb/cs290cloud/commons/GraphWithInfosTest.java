@@ -2,8 +2,18 @@ package edu.ucsb.cs290cloud.commons;
 
 import static org.junit.Assert.*;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
+import edu.ucsb.cs290cloud.server.Scheduler;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({GraphWithInfos.class}) // Class that creates the new instance of GraphsExplorer and that we want to mock
 public class GraphWithInfosTest {
 
 	@Test
@@ -58,5 +68,50 @@ public class GraphWithInfosTest {
 		assertNotEquals(graph.getValue(0, 0), clonedGraph.getValue(0, 0));
 		assertFalse(graph.equals(clonedGraph));
 	}
-
+	
+	@Test
+	public void testIsCounterExample_counterExampleCase() {
+		CliqueCounter cliqueCounterMock;
+		GraphWithInfos graph;
+		
+		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
+		try {
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		cliqueCounterMock.getMonochromaticSubcliquesCount();
+		PowerMock.expectLastCall().andReturn(0);
+		
+		PowerMock.replayAll();
+		
+		graph = new GraphWithInfos(2);
+		assertTrue(graph.isCounterExample());
+		
+		PowerMock.verifyAll();
+	}
+	
+	@Test
+	public void testIsCounterExample_notCounterExampleCase() {
+		CliqueCounter cliqueCounterMock;
+		GraphWithInfos graph;
+		
+		cliqueCounterMock = PowerMock.createMock(CliqueCounter.class);
+		try {
+			PowerMock.expectNew(CliqueCounter.class, new Class[] {int[][].class}, EasyMock.anyObject(int[][].class)).andReturn(cliqueCounterMock);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		cliqueCounterMock.getMonochromaticSubcliquesCount();
+		PowerMock.expectLastCall().andReturn(1);
+		
+		PowerMock.replayAll();
+		
+		graph = new GraphWithInfos(2);
+		assertFalse(graph.isCounterExample());
+		
+		PowerMock.verifyAll();
+	}
 }

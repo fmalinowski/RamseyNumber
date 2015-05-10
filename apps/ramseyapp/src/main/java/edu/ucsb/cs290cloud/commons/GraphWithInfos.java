@@ -2,6 +2,8 @@ package edu.ucsb.cs290cloud.commons;
 
 import java.util.Random;
 
+import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
+
 public class GraphWithInfos extends Graph {
 	
 	private static final long serialVersionUID = -4751788528533102281L;
@@ -25,6 +27,10 @@ public class GraphWithInfos extends Graph {
 	
 	public GraphWithInfos(int [][] graph) {
 		super(graph);
+	}
+	
+	public GraphWithInfos(String graphString, int size) {
+		super(graphString, size);
 	}
 	
 	public int getParentGraphID() {
@@ -156,5 +162,9 @@ public class GraphWithInfos extends Graph {
 		}
 		
 		return output;
+	}
+	
+	public Boolean isCounterExample() {
+		return (new CliqueCounter(this.graph).getMonochromaticSubcliquesCount() == 0 );
 	}
 }

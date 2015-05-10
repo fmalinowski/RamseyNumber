@@ -12,14 +12,14 @@ public class GraphsExplorer {
 	
 	public final static int MAX_NUMBER_OF_GRAPHS_STORED_IN_MEMORY_PER_SIZE = 5;
 
-	private HashMap<Integer, LinkedList> counterExamples;
-	private HashMap<Integer, LinkedList> graphsBeingComputed;
+	private HashMap<Integer, LinkedList<GraphWithInfos>> counterExamples;
+	private HashMap<Integer, LinkedList<GraphWithInfos>> graphsBeingComputed;
 	private GraphsStore graphsStore;
 	private GraphDao graphDao;
 	
 	public GraphsExplorer() {
-		this.counterExamples = new HashMap<Integer, LinkedList>();
-		this.graphsBeingComputed = new HashMap<Integer, LinkedList>();
+		this.counterExamples = new HashMap<Integer, LinkedList<GraphWithInfos>>();
+		this.graphsBeingComputed = new HashMap<Integer, LinkedList<GraphWithInfos>>();
 		this.graphDao = new GraphDaoParse();
 		
 		try {
@@ -37,33 +37,7 @@ public class GraphsExplorer {
 	 * @param graph
 	 */
 	public void addNewCounterExample(GraphWithInfos graph) {
-		LinkedList<GraphWithInfos> listCounterExamples;
-		LinkedList<GraphWithInfos> listGraphs;
-		GraphWithInfos graphSavedOnServer;
-		
-		// We remove all the graphs being computed of that size and set the list to be null
-		this.graphsBeingComputed.remove(graph.size());
-		
-		listCounterExamples = this.counterExamples.get(graph.size());
-		if (listCounterExamples == null) {
-			listCounterExamples = new LinkedList<GraphWithInfos>();
-			this.counterExamples.put(graph.size(), listCounterExamples);
-		}
-		
-		graph.setStatus(GraphWithInfos.Status.COUNTER_EXAMPLE_SAVED);
-		
-		this.addCounterExampleToList(listCounterExamples, graph);
-		
-		this.graphsStore.storeCounterExample(graph);
-		this.graphDao.storeGraph(graph);
-		
-		// BEGIN OF DEBUG PRINTS AREA
-		System.out.println("----------------------");
-		System.out.println("GOT A COUNTER EXAMPLE!");
-		System.out.println("Size: " + graph.size());
-		System.out.println(graph.printGraph());
-		System.out.println("----------------------");
-		// END OF DEBUG PRINTS AREA
+		this.addNewCounterExampleWithStoreOption(graph, true);
 	}
 	
 	/**
@@ -146,4 +120,52 @@ public class GraphsExplorer {
 			graphsList.removeLast();
 		}
 	}	
+	
+	public void loadGraphsFromDisk() {
+		this.counterExamples = this.graphsStore.loadCounterExamples();
+	}
+	
+	public void loadGraphsFromRemoteService() {
+		GraphWithInfos bestCounterExampleStored;
+		
+		bestCounterExampleStored = this.graphDao.getLatestGraph();
+		bestCounterExampleStored.setBestCount(0);
+		bestCounterExampleStored.setStatus(GraphWithInfos.Status.COUNTER_EXAMPLE_SAVED);
+		
+		if (bestCounterExampleStored.isCounterExample()) {
+			this.addNewCounterExampleWithStoreOption(bestCounterExampleStored, false);
+		}
+	}
+	
+	private void addNewCounterExampleWithStoreOption(GraphWithInfos graph, Boolean shouldStore) {
+		LinkedList<GraphWithInfos> listCounterExamples;
+		LinkedList<GraphWithInfos> listGraphs;
+		GraphWithInfos graphSavedOnServer;
+		
+		// We remove all the graphs being computed of that size and set the list to be null
+		this.graphsBeingComputed.remove(graph.size());
+		
+		listCounterExamples = this.counterExamples.get(graph.size());
+		if (listCounterExamples == null) {
+			listCounterExamples = new LinkedList<GraphWithInfos>();
+			this.counterExamples.put(graph.size(), listCounterExamples);
+		}
+		
+		graph.setStatus(GraphWithInfos.Status.COUNTER_EXAMPLE_SAVED);
+		
+		this.addCounterExampleToList(listCounterExamples, graph);
+		
+		if (shouldStore) {
+			this.graphsStore.storeCounterExample(graph);
+			this.graphDao.storeGraph(graph);
+		}
+		
+		// BEGIN OF DEBUG PRINTS AREA
+		System.out.println("----------------------");
+		System.out.println("GOT A COUNTER EXAMPLE!");
+		System.out.println("Size: " + graph.size());
+		System.out.println(graph.printGraph());
+		System.out.println("----------------------");
+		// END OF DEBUG PRINTS AREA
+	}
 }

@@ -4,7 +4,7 @@ import edu.ucsb.cs290cloud.strategies.Strategy1;
 
 public class Main {
 
-	public final static int PORT_DEFAULT = 8001;
+	public final static int PORT_DEFAULT = 50000;
 	public final static String IP_DEFAULT = "localhost";
 	
 	// start a client here
