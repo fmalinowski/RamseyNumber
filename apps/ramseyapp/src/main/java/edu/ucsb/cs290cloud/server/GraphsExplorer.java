@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+import edu.ucsb.cs290cloud.server.graphdao.GraphDao;
+import edu.ucsb.cs290cloud.server.graphdao.GraphDaoParse;
 
 public class GraphsExplorer {
 	
@@ -14,10 +16,13 @@ public class GraphsExplorer {
 	private HashMap<Integer, LinkedList> counterExamples;
 	private HashMap<Integer, LinkedList> graphsBeingComputed;
 	private GraphsStore graphsStore;
+	private GraphDao graphDao;
 	
 	public GraphsExplorer() {
 		this.counterExamples = new HashMap<Integer, LinkedList>();
 		this.graphsBeingComputed = new HashMap<Integer, LinkedList>();
+		this.graphDao = new GraphDaoParse();
+		
 		try {
 			this.graphsStore = new GraphsStore(System.getProperty(("user.dir")));
 		} catch (Exception e) {
@@ -51,6 +56,7 @@ public class GraphsExplorer {
 		this.addCounterExampleToList(listCounterExamples, graph);
 		
 		this.graphsStore.storeCounterExample(graph);
+		this.graphDao.storeGraph(graph);
 		
 		// BEGIN OF DEBUG PRINTS AREA
 		System.out.println("----------------------");
