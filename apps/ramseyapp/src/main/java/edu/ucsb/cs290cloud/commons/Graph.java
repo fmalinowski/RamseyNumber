@@ -148,7 +148,7 @@ public class Graph implements Serializable {
 		int i,j;
 		i=1;
 		j=0;
-		while(i>j) {
+		while(!(i<j)) {
 			i = rn.nextInt(size);
 			j = rn.nextInt(size);
 		}
