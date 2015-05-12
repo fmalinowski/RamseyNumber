@@ -185,4 +185,23 @@ public class Graph implements Serializable {
 		}
 		return true;
 	}
+
+	public Pair<Integer,Integer> countValues()
+	{
+		int numOne, numZero;
+		numOne = numZero = 0;
+		for(int i=0; i<size; i++)
+		{
+			for(int j=i+1; j<size; j++)
+			{
+				if(graph[i][j]==1) {
+					numOne++;
+				}
+				else {
+					numZero++;
+				}
+			}
+		}
+		return new Pair<Integer, Integer>(numZero,numOne);
+	}
 }
