@@ -15,6 +15,7 @@ public class Strategy1Random extends Strategy {
     public void runStrategy() {
         int cliquesCount, bestCliquesCount;
         FIFOEdge fifoEdge;
+        int best_i,best_j;
 
         GraphWithInfos graph = this.getInitialGraph();
 
@@ -36,7 +37,8 @@ public class Strategy1Random extends Strategy {
                 this.setStrategyStatus(Strategy.Status.COUNTER_EXAMPLE, graph);
                 return;
             }
-            else {
+            else if(fifoEdge.getSize() < .75*fifoEdge.getMaxFIFOSize()) {
+
                 Pair<Integer, Integer> coord = graph.getRandomCoord();
                 i = coord.getElement0();
                 j = coord.getElement1();
@@ -50,10 +52,14 @@ public class Strategy1Random extends Strategy {
                         fifoEdge.resetFIFO();
                         bestCliquesCount = cliquesCount;
 
+                        //Pair<Integer,Integer> p = graph.countValues();
+
                         System.out.print("Graph size: " + graph.size() + ", ");
                         System.out.print("Best count: " + bestCliquesCount + ", ");
                         System.out.print("Random edge: (" + i + "," + j + "), ");
-                        System.out.print("New color: " + graph.getValue(i, j) + "\n");
+                        System.out.print("New color: " + graph.getValue(i, j)+"), ");
+                        //System.out.print("Ones&Zeroes:"+p.toString());
+                        System.out.print("\n");
                     } else {
                         graph.flipValue(i, j);//flip back
                     }
@@ -61,20 +67,50 @@ public class Strategy1Random extends Strategy {
 
                 }
             }
-
-            if(fifoEdge.getSize() >= fifoEdge.getMaxFIFOSize())
+            else //revert to strategy 1 so we dont waste too much time trying to randomly select
             {
-                System.out.println("Need to backtrack a little");
-                for(int k=0; k<1;k++) {
-                    Pair<Integer, Integer> p = graph.getRandomCoord();
-                    graph.flipValue(p.getElement0(), p.getElement1());
-                }
-                cliquesCount = new CliqueCounter(graph.getRawGraph())
-                        .getMonochromaticSubcliquesCount();
-                bestCliquesCount = cliquesCount;
-                fifoEdge.resetFIFO();
-            }
+                best_i = best_j = 0;
+                for (i = 0; i < graph.size(); i++) {
+                    for (j = i + 1; j < graph.size(); j++) {
+                        if(!fifoEdge.findEdge(i, j))
+                        // We flip the value of the cell in the graph
+                        graph.flipValue(i, j);
 
+                        // We check if number of cliques decreased: it's a good
+                        // thing
+                        cliquesCount = new CliqueCounter(graph.getRawGraph())
+                                .getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
+
+                        if ((cliquesCount < bestCliquesCount)){
+                            bestCliquesCount = cliquesCount;
+                            best_i = i;
+                            best_j = j;
+                        }
+                        //fifoEdge.insertEdge(i,j);
+
+                        // Set back the original value
+                        graph.flipValue(i, j);
+                    }
+                }
+
+                fifoEdge.resetFIFO();
+
+                if(best_i == 0 && best_j == 0)
+                {
+                    System.out.println("Need to backtrack a little");
+                    for(int k=0; k<2;k++) {
+                        Pair<Integer, Integer> p = graph.getRandomCoord();
+                        graph.flipValue(p.getElement0(), p.getElement1());
+                    }
+                    cliquesCount = new CliqueCounter(graph.getRawGraph())
+                            .getMonochromaticSubcliquesCount();
+                    bestCliquesCount = cliquesCount;
+                }else
+                {
+                    graph.flipValue(best_i, best_j);
+                    fifoEdge.insertEdge(best_i,best_j);
+                }
+            }
         }
     }
 }
