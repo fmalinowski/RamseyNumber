@@ -1,4 +1,4 @@
-package edu.ucsb.cs290cloud.server.graphdao;
+package edu.ucsb.cs290cloud.graphdao;
 
 import edu.ucsb.cs290cloud.commons.Graph;
 

@@ -2,10 +2,8 @@ package edu.ucsb.cs290cloud.server;
 
 import static org.junit.Assert.*;
 
-import java.net.DatagramPacket;
 import java.util.LinkedList;
 
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +13,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
-import edu.ucsb.cs290cloud.server.graphdao.GraphDaoParse;
+import edu.ucsb.cs290cloud.graphdao.GraphDaoParse;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({GraphsExplorer.class, GraphDaoParse.class}) // Class that creates the new instance and that we want to mock

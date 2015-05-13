@@ -1,4 +1,4 @@
-package edu.ucsb.cs290cloud.server.graphdao;
+package edu.ucsb.cs290cloud.graphdao;
 
 import edu.ucsb.cs290cloud.commons.Graph;
 import org.parse4j.Parse;
@@ -43,6 +43,7 @@ public class GraphDaoParse implements GraphDao {
         ParseQuery<ParseObject> q = ParseQuery.getQuery(GRAPH_CLASSNAME);
         q.orderByDescending(SIZE_COLUMN);
         q.limit(1);
+
         try{
             List<ParseObject> l = q.find();
             ParseObject o = l.get(0);
