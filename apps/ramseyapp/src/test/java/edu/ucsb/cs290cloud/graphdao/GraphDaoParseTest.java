@@ -2,6 +2,9 @@ package edu.ucsb.cs290cloud.graphdao;
 
 
 import edu.ucsb.cs290cloud.commons.Graph;
+import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+
+import org.junit.Test;
 
 /**
  * Created by ethan_000 on 5/7/2015.
@@ -11,7 +14,7 @@ public class GraphDaoParseTest {
     public void testSave()
     {
         GraphDaoParse parse = new GraphDaoParse();
-        Graph g = new Graph(13);
+        GraphWithInfos g = new GraphWithInfos(13);
         parse.storeGraph(g);
     }
 

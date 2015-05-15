@@ -1,6 +1,8 @@
 package edu.ucsb.cs290cloud.graphdao;
 
 import edu.ucsb.cs290cloud.commons.Graph;
+import edu.ucsb.cs290cloud.commons.GraphWithInfos;
+
 import org.parse4j.Parse;
 import org.parse4j.ParseException;
 import org.parse4j.ParseObject;
@@ -24,7 +26,7 @@ public class GraphDaoParse implements GraphDao {
         Parse.initialize(APP_ID, APP_REST_API_ID);
     }
 
-    public void storeGraph(Graph graph){
+    public void storeGraph(GraphWithInfos graph){
         int size = graph.size();
         ParseObject o = new ParseObject(GRAPH_CLASSNAME);
         o.put(SIZE_COLUMN,size);
@@ -39,7 +41,7 @@ public class GraphDaoParse implements GraphDao {
 
     }
 
-    public Graph getLatestGraph(){
+    public GraphWithInfos getLatestGraph(){
         ParseQuery<ParseObject> q = ParseQuery.getQuery(GRAPH_CLASSNAME);
         q.orderByDescending(SIZE_COLUMN);
         q.limit(1);
@@ -47,7 +49,7 @@ public class GraphDaoParse implements GraphDao {
         try{
             List<ParseObject> l = q.find();
             ParseObject o = l.get(0);
-            Graph graph = new Graph(o.getString(DATA_COLUMN), o.getInt(SIZE_COLUMN));
+            GraphWithInfos graph = new GraphWithInfos(o.getString(DATA_COLUMN), o.getInt(SIZE_COLUMN));
             return graph;
         }
         catch (ParseException e)

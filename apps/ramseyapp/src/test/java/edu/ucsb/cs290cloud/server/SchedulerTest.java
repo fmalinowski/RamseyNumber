@@ -27,11 +27,11 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		graphsExplorerMock.getMaxCounterExamplesSize();
 		PowerMock.expectLastCall().andReturn(0);
@@ -42,7 +42,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		graphWithInfos = scheduler.getNewTask();
 		
 		assertEquals(Scheduler.INITIAL_GENERATED_GRAPH_SIZE, graphWithInfos.size());
@@ -60,11 +60,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.getMaxCounterExamplesSize();
 		PowerMock.expectLastCall().andReturn(26);
@@ -87,7 +82,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.getNewTask();
 		
 		// We make sure that the new graph contains the counterExample and is one size above
@@ -111,11 +106,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.getMaxCounterExamplesSize();
 		PowerMock.expectLastCall().andReturn(26);
@@ -131,7 +121,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.getNewTask();
 		
 		// We make sure that the new graph contains the counterExample and is one size above
@@ -165,11 +155,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addNewCounterExample(graphFromClient);
 		
@@ -193,7 +178,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processFoundCounterExample(graphFromClient);
 		
 		// We make sure that the new graph contains the counterExample and is one size above
@@ -231,11 +216,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addNewCounterExample(graphFromClient);
 		
@@ -253,7 +233,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processFoundCounterExample(graphFromClient);
 		
 		// We make sure that the new graph contains the counterExample and is one size above
@@ -286,11 +266,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.getMaxCounterExamplesSize();
 		PowerMock.expectLastCall().andReturn(3);
@@ -306,7 +281,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processFoundCounterExample(graphFromClient);
 		
 		// We make sure that the new graph is the last graph being computed of size 4
@@ -329,11 +304,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
 		
@@ -356,7 +326,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
 		// We make sure that the new graph contains the counterExample and is one size above
@@ -382,11 +352,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
 		
@@ -404,7 +369,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
 		assertEquals(6, answerGraph.size());
@@ -424,11 +389,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
 		
@@ -446,7 +406,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
 		assertEquals(4, answerGraph.size());
@@ -466,11 +426,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
 		
@@ -486,7 +441,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
 		assertEquals(null, answerGraph);
@@ -508,11 +463,6 @@ public class SchedulerTest {
 		
 		// CONFIGURE THE MOCK
 		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
-		try {
-			PowerMock.expectNew(GraphsExplorer.class).andReturn(graphsExplorerMock);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		graphsExplorerMock.addGraphBeingComputed(graphFromClient);
 		
@@ -528,7 +478,7 @@ public class SchedulerTest {
 		PowerMock.replayAll();
 		
 		// TEST
-		scheduler = new Scheduler();
+		scheduler = new Scheduler(graphsExplorerMock);
 		answerGraph = scheduler.processStatusUpdateFromClient(graphFromClient);
 		
 		assertEquals(differentBestGraphAlreadySaved, answerGraph);

@@ -28,6 +28,7 @@ public class ServerResponderTest {
 		
 		byte[] bytesToSend = {4, 3, 7};
 		
+		GraphsExplorer graphsExplorerMock;
 		DatagramSocket serverSocketMock = PowerMock.createMock(DatagramSocket.class);
 		DatagramPacket packetMock = PowerMock.createMock(DatagramPacket.class);
 		
@@ -56,11 +57,13 @@ public class ServerResponderTest {
 			e.printStackTrace();
 		}
 		
+		graphsExplorerMock = PowerMock.createMock(GraphsExplorer.class);
+		
 		// We make the mock object effective after having declared all the mock stuff
 		PowerMock.replayAll();
 		
 		// Test now
-		ServerResponder serverResponder = new ServerResponder(serverSocketMock, packetMock, new Scheduler());
+		ServerResponder serverResponder = new ServerResponder(serverSocketMock, packetMock, new Scheduler(graphsExplorerMock));
 		serverResponder.sendMessage(bytesToSend);
 		
 		// Make sure all the calls were eventually done correctly

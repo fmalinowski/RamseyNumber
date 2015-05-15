@@ -11,8 +11,8 @@ public class Scheduler {
 	public final static int INITIAL_GENERATED_GRAPH_SIZE = 20;
 	private GraphsExplorer graphsExplorer;
 
-	public Scheduler() {
-		this.graphsExplorer = new GraphsExplorer();
+	public Scheduler(GraphsExplorer graphsExplorer) {
+		this.graphsExplorer = graphsExplorer;
 	}
 
 	/**
