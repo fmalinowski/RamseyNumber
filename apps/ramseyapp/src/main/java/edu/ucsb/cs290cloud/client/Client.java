@@ -10,10 +10,12 @@ import java.net.UnknownHostException;
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
 import edu.ucsb.cs290cloud.strategies.Strategy;
-import edu.ucsb.cs290cloud.strategies.Strategy1;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Client {
-	
+	static Logger LOGGER = LoggerFactory.getLogger(Client.class);
+
 	private InetAddress serverIPAddress;
 	private int port;
 	private String host;
@@ -43,15 +45,15 @@ public class Client {
 		Message messageToServer;
 		DatagramPacket sendPacket;
 		byte[] bytesToSend;
-		
+
 		// BEGIN OF DEBUG PRINTS AREA
-		System.out.println("--------------------");
-		System.out.println("-> sending " + status);
+		LOGGER.info("--------------------");
+		LOGGER.info("-> sending " + status);
 		if (graph != null) {
-			System.out.println("Best Count: " + graph.getBestCount());
-			System.out.println(graph.printGraph());
+			LOGGER.info("Best Count: " + graph.getBestCount());
+			LOGGER.info(graph.printGraph());
 		}
-		System.out.println("--------------------");
+		LOGGER.info("--------------------");
 		// END OF DEBUG PRINTS AREA
 		
 		messageToServer = new Message();
@@ -92,14 +94,14 @@ public class Client {
 		messageFromServer = Message.deserialize(receivedBytes);
 		
 		// BEGIN OF DEBUG PRINTS AREA
-		System.out.println("--------------------");
-		System.out.println("receive " + messageFromServer.getMessage());
+		LOGGER.info("--------------------");
+		LOGGER.info("receive " + messageFromServer.getMessage());
 		if (messageFromServer.getGraph() != null) {
-			System.out.println("Best Count: " + messageFromServer.getGraph().getBestCount());
-			System.out.println("Size: " + messageFromServer.getGraph().size());
-			System.out.println(messageFromServer.getGraph().printGraph());
+			LOGGER.info("Best Count: " + messageFromServer.getGraph().getBestCount());
+			LOGGER.info("Size: " + messageFromServer.getGraph().size());
+			LOGGER.info(messageFromServer.getGraph().printGraph());
 		}
-		System.out.println("--------------------");
+		LOGGER.info("--------------------");
 		// END OF DEBUG PRINTS AREA
 		
 		return messageFromServer;
