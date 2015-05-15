@@ -3,6 +3,8 @@ package edu.ucsb.cs290cloud.strategies;
 import edu.ucsb.cs290cloud.commons.*;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 import org.parse4j.ParseObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by ethan_000 on 5/10/2015.
@@ -10,7 +12,7 @@ import org.parse4j.ParseObject;
 public class Strategy1Random extends Strategy {
     public static final int TABOO_SIZE = 500;
     public static final int MAX_GRAPH_SIZE = 150;
-
+    static Logger LOGGER = LoggerFactory.getLogger(Strategy1Random.class);
     @Override
     public void runStrategy() {
         int cliquesCount, bestCliquesCount;
@@ -30,10 +32,7 @@ public class Strategy1Random extends Strategy {
         while (graph.size() < MAX_GRAPH_SIZE) {
             // 0 subcliques so we found a counter example
             if (cliquesCount == 0) {
-                System.out.println("Found a counter-example");
-                System.out.println(graph.printGraph());
-                System.out.println("--------------");
-
+                LOGGER.info("Found a counter-example\n"+graph.printGraph()+"\n----------");
                 this.setStrategyStatus(Strategy.Status.COUNTER_EXAMPLE, graph);
                 return;
             }
