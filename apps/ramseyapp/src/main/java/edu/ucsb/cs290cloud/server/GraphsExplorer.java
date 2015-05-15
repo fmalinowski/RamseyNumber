@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.graphdao.GraphDao;
 import edu.ucsb.cs290cloud.graphdao.GraphDaoParse;
+import org.slf4j.LoggerFactory;
 
 public class GraphsExplorer {
-	
+	static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(GraphsExplorer.class);
 	public final static int MAX_NUMBER_OF_GRAPHS_STORED_IN_MEMORY_PER_SIZE = 5;
 
 	private HashMap<Integer, LinkedList<GraphWithInfos>> counterExamples;
@@ -58,12 +59,12 @@ public class GraphsExplorer {
 		
 		this.addGraphBeingComputedToListAndKeepBestCounts(listGraphsBeingComputed, graph);
 		
-		System.out.println("----------------------");
-		System.out.println("GRAPH Being Computed");
-		System.out.println("Size: " + graph.size());
-		System.out.println("BestCount: " + graph.getBestCount());
-		System.out.println(graph.printGraph());
-		System.out.println("----------------------");
+		LOGGER.info("----------------------");
+		LOGGER.info("GRAPH Being Computed");
+		LOGGER.info("Size: " + graph.size());
+		LOGGER.info("BestCount: " + graph.getBestCount());
+		LOGGER.info(graph.printGraph());
+		LOGGER.info("----------------------");
 	}
 	
 	public int getMaxCounterExamplesSize() {
@@ -161,11 +162,11 @@ public class GraphsExplorer {
 		}
 		
 		// BEGIN OF DEBUG PRINTS AREA
-		System.out.println("----------------------");
-		System.out.println("GOT A COUNTER EXAMPLE!");
-		System.out.println("Size: " + graph.size());
-		System.out.println(graph.printGraph());
-		System.out.println("----------------------");
+		LOGGER.info("----------------------");
+		LOGGER.info("GOT A COUNTER EXAMPLE!");
+		LOGGER.info("Size: " + graph.size());
+		LOGGER.info(graph.printGraph());
+		LOGGER.info("----------------------");
 		// END OF DEBUG PRINTS AREA
 	}
 }
