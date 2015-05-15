@@ -10,12 +10,14 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
+import org.slf4j.LoggerFactory;
 
 public class ServerResponder implements Runnable {
-	
+	static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(ServerResponder.class);
 	private Scheduler scheduler;
 	private DatagramSocket serverSocket;
 	private DatagramPacket packet;
@@ -33,8 +35,8 @@ public class ServerResponder implements Runnable {
 		
 		receivedBytes = this.packet.getData();
 		messageFromClient = Message.deserialize(receivedBytes);
-		
-		System.out.println("Got a Message");
+
+		LOGGER.info("Got a Message");
 		
 		messageForClient = this.getNewTaskForClient(messageFromClient);
 		bytesToSend = messageForClient.serialize();
@@ -73,27 +75,25 @@ public class ServerResponder implements Runnable {
 		graphFromClient = messageFromClient.getGraph();
 		
 		if (messageFromClient.getMessage().equals("READY")) {
-			System.out.println("GOT A READY MESSAGE");
+			LOGGER.info("GOT A READY MESSAGE -> sending NEWGRAPH message");
 			graphForClient = this.scheduler.getNewTask();
-			System.out.println("-> sending NEWGRAPH message");
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
-			System.out.println("GOT A COUNTER EXAMPLE MESSAGE");
+			LOGGER.info("GOT A COUNTER EXAMPLE MESSAGE -> sending NEWGRAPH message");
 			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
-			System.out.println("-> sending NEWGRAPH message");
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
-			System.out.println("GOT A STATUS MESSAGE");
+			LOGGER.info("GOT A STATUS MESSAGE");
 			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
 			
 			if (graphForClient == null) {
-				System.out.println("-> sending CONTINUE message");
+				LOGGER.info("-> sending CONTINUE message");
 				answerForClient.setMessage("CONTINUE");
 			}
 			else {
-				System.out.println("-> sending NEWGRAPH message");
+				LOGGER.info("-> sending NEWGRAPH message");
 				answerForClient.setMessage("NEWGRAPH");
 			}
 		}
