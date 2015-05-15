@@ -75,7 +75,7 @@ public class Strategy1 extends Strategy {
 				}
 
 				if (bestCliquesCount == HIGH_LIMIT_CLIQUE_COUNT) {
-					System.out.println("No best edge found, terminating");
+					LOGGER.info("No best edge found, terminating");
 					return;
 				}
 

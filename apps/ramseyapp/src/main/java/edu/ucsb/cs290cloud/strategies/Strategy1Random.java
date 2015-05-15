@@ -94,7 +94,7 @@ public class Strategy1Random extends Strategy {
 
                 if(best_i == 0 && best_j == 0)
                 {
-                    System.out.println("Need to backtrack a little");
+                    LOGGER.debug("Need to backtrack a little");
                     for(int k=0; k<1;k++) {
                         Pair<Integer, Integer> p = graph.getRandomCoord();
                         graph.flipValue(p.getElement0(), p.getElement1());
