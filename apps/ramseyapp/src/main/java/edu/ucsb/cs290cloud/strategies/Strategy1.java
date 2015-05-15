@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Strategy1 extends Strategy {
-	static Logger LOGGER = LoggerFactory.getLogger(Strategy1Random.class);
+	static Logger LOGGER = LoggerFactory.getLogger(Strategy1.class);
 
 	public static final int TABOO_SIZE = 500;
 	public static final int MAX_GRAPH_SIZE = 150;
