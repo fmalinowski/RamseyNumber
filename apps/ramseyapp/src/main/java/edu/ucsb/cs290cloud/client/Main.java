@@ -45,7 +45,6 @@ public class Main {
 		clientStrategy = cmd.hasOption("s") ? cmd.getOptionValue("s") : DEFAULT_STRATEGY;
 		
 		strategyClass = getStrategyClass(clientStrategy);
-		System.out.println("STrategyCLient: " + strategyClass.getName());
 		
 		Client client;		
 		client = new Client(PORT_DEFAULT, ipMasterNode, strategyClass);
