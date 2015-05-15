@@ -32,7 +32,7 @@ public class Strategy1Random extends Strategy {
         while (graph.size() < MAX_GRAPH_SIZE) {
             // 0 subcliques so we found a counter example
             if (cliquesCount == 0) {
-                LOGGER.info("Found a counter-example\n"+graph.printGraph()+"\n----------");
+                LOGGER.info("Found a counter-example\n" + graph.printGraph() + "\n----------");
                 this.setStrategyStatus(Strategy.Status.COUNTER_EXAMPLE, graph);
                 return;
             }
@@ -51,14 +51,12 @@ public class Strategy1Random extends Strategy {
                         fifoEdge.resetFIFO();
                         bestCliquesCount = cliquesCount;
 
-                        //Pair<Integer,Integer> p = graph.countValues();
+                        LOGGER.debug("Graph size: " + graph.size() + ", ");
+                        LOGGER.debug("Best count: " + bestCliquesCount + ", ");
+                        LOGGER.debug("Random edge: (" + i + "," + j + "), ");
+                        LOGGER.debug("New color: " + graph.getValue(i, j) + "), ");
+                        LOGGER.debug("\n");
 
-                        /*System.out.print("Graph size: " + graph.size() + ", ");
-                        System.out.print("Best count: " + bestCliquesCount + ", ");
-                        System.out.print("Random edge: (" + i + "," + j + "), ");
-                        System.out.print("New color: " + graph.getValue(i, j)+"), ");
-                        System.out.print("\n");
-                        */
                     } else {
                         graph.flipValue(i, j);//flip back
                     }

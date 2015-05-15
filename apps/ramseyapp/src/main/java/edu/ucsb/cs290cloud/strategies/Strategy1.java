@@ -3,9 +3,12 @@ package edu.ucsb.cs290cloud.strategies;
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 import edu.ucsb.cs290cloud.commons.FIFOEdge;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Strategy1 extends Strategy {
-	
+	static Logger LOGGER = LoggerFactory.getLogger(Strategy1Random.class);
+
 	public static final int TABOO_SIZE = 500;
 	public static final int MAX_GRAPH_SIZE = 150;
 	public static final int HIGH_LIMIT_CLIQUE_COUNT = 9999999;
@@ -30,10 +33,10 @@ public class Strategy1 extends Strategy {
 			// 0 subclique so we found a counter example
 			if (cliquesCount == 0) {
 				// BEGIN OF DEBUG PRINTS AREA
-				System.out.println("Found a counter-example");
-				System.out.println("size: " + graph.size());
-				System.out.println(graph.printGraph());
-				System.out.println("--------------");
+				LOGGER.info("Found a counter-example");
+				LOGGER.info("size: " + graph.size());
+				LOGGER.info(graph.printGraph());
+				LOGGER.info("--------------");
 				// END OF DEBUG PRINTS AREA
 				
 				// Save the counter example and end the computation because  
@@ -88,11 +91,10 @@ public class Strategy1 extends Strategy {
 				this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
 				// BEGIN OF DEBUG PRINTS AREA
-				System.out.print("Graph size: " + graph.size() + ", ");
-				System.out.print("Best count: " + bestCliquesCount + ", ");
-				System.out
-						.print("Best edge: (" + best_i + "," + best_j + "), ");
-				System.out.print("New color: " + graph.getValue(best_i, best_j)
+				LOGGER.debug("Graph size: " + graph.size() + ", ");
+				LOGGER.debug("Best count: " + bestCliquesCount + ", ");
+				LOGGER.debug("Best edge: (" + best_i + "," + best_j + "), ");
+				LOGGER.debug("New color: " + graph.getValue(best_i, best_j)
 						+ "\n");
 				// END OF DEBUG PRINTS AREA
 			}
