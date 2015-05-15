@@ -54,12 +54,12 @@ public class Strategy1Random extends Strategy {
 
                         //Pair<Integer,Integer> p = graph.countValues();
 
-                        System.out.print("Graph size: " + graph.size() + ", ");
+                        /*System.out.print("Graph size: " + graph.size() + ", ");
                         System.out.print("Best count: " + bestCliquesCount + ", ");
                         System.out.print("Random edge: (" + i + "," + j + "), ");
                         System.out.print("New color: " + graph.getValue(i, j)+"), ");
-                        //System.out.print("Ones&Zeroes:"+p.toString());
                         System.out.print("\n");
+                        */
                     } else {
                         graph.flipValue(i, j);//flip back
                     }
