@@ -1,12 +1,16 @@
 package edu.ucsb.cs290cloud.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class Server implements Runnable {
-	
+	static Logger LOGGER = LoggerFactory.getLogger(Server.class);
+
 	private static final int BUFFER_SIZE = 65507;
 	
 	private DatagramSocket serverSocket;
@@ -18,10 +22,10 @@ public class Server implements Runnable {
 		
 		try {
 			this.serverSocket = new DatagramSocket(port);
-			System.out.println("Waiting for clients on port " + 
+			LOGGER.info("Waiting for clients on port " +
 					this.serverSocket.getLocalPort() + "...");
 		} catch (SocketException e) {
-			System.err.println("ERROR: impossible to create a Datagram Socket");
+			LOGGER.error("ERROR: impossible to create a Datagram Socket");
 			e.printStackTrace();
 		}
 	}
@@ -41,12 +45,12 @@ public class Server implements Runnable {
 			
 			buffer = new byte[BUFFER_SIZE];
 			packet = new DatagramPacket(buffer, buffer.length);
-			
-			System.out.println("WAITING FOR PACKET");
-			
+
+			LOGGER.info("WAITING FOR PACKET");
+
 			try {
 				this.serverSocket.receive(packet);
-				System.out.println("udp Packet Received!");
+				LOGGER.info("udp Packet Received");
 				new Thread(new ServerResponder(this.serverSocket, packet, this.scheduler)).start();
 			} catch (Exception e) {
 				e.printStackTrace();
