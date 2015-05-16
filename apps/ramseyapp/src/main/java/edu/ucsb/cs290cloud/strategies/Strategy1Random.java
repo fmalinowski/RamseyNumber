@@ -51,11 +51,11 @@ public class Strategy1Random extends Strategy {
                         fifoEdge.resetFIFO();
                         bestCliquesCount = cliquesCount;
 
-                        LOGGER.debug("Graph size: " + graph.size() + ", ");
-                        LOGGER.debug("Best count: " + bestCliquesCount + ", ");
-                        LOGGER.debug("Random edge: (" + i + "," + j + "), ");
-                        LOGGER.debug("New color: " + graph.getValue(i, j) + "), ");
-                        LOGGER.debug("\n");
+                        LOGGER.info("Graph size: " + graph.size() + ", ");
+                        LOGGER.info("Best count: " + bestCliquesCount + ", ");
+                        LOGGER.info("Random edge: (" + i + "," + j + "), ");
+                        LOGGER.info("New color: " + graph.getValue(i, j) + "), ");
+                        LOGGER.info("\n");
 
                     } else {
                         graph.flipValue(i, j);//flip back
@@ -94,7 +94,7 @@ public class Strategy1Random extends Strategy {
 
                 if(best_i == 0 && best_j == 0)
                 {
-                    LOGGER.debug("Need to backtrack a little");
+                    LOGGER.info("Need to backtrack a little");
                     for(int k=0; k<1;k++) {
                         Pair<Integer, Integer> p = graph.getRandomCoord();
                         graph.flipValue(p.getElement0(), p.getElement1());
