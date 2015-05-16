@@ -34,11 +34,10 @@ public class Strategy1Distributed extends Strategy {
 		FIFOEdge fifoEdge;
 		int cliquesCount, bestCliquesCount;
 		int best_i, best_j;
-		int numberMatrixRowsPerClient;
-		int beginRowIndex, lastRowIndexExcluded;
-		MatrixIndexes matrixIndexes;
+		int beginColumnIndex;
+		MatrixIndexes mi;
 		
-		matrixIndexes = new MatrixIndexes();
+		mi = new MatrixIndexes();
 		
 		graph = this.getInitialGraph();
 
@@ -65,47 +64,37 @@ public class Strategy1Distributed extends Strategy {
 				this.setStrategyStatus(Strategy.Status.COUNTER_EXAMPLE, graph);
 				return;
 				
-			} else {
-				// We flip an edge, record the new count and unflip the edge.
-				// We'll remember the best flip and keep it next time
-				// We work only with the upper part of the matrix
+			} 
+			else {
 				bestCliquesCount = HIGH_LIMIT_CLIQUE_COUNT;
 				
-				// TODO DONT FORGET that if matrixSize / numberOfMatrixSplits is not integer
+				// If matrixSize / numberOfMatrixSplits is not integer
 				// then the last big squares (last rows) need to be bigger
-				// for instance size 81 and split is 4. last split will be from 60 to 81!
-				// (59 to 80)
-				numberMatrixRowsPerClient = graph.size() / this.numberOfMatrixSplits;
-				for (int i = 0; i < this.numberOfMatrixSplits; i++) {					
-					matrixIndexes = this.getRowIndexes(i, graph.size());
-					beginRowIndex = matrixIndexes.beginRowIndex;
-					lastRowIndexExcluded = matrixIndexes.lastRowIndexExcluded;
+				// for instance if size 81 and split is 4, last split will be from 59 to 80!
+
+				for (int currentRowMatrixSplitGroup = 1; 
+						currentRowMatrixSplitGroup <= this.numberOfMatrixSplits; 
+						currentRowMatrixSplitGroup++) {					
 					
-					// We should skip this loop if we know that we will have a square out of upper triangle
-					for (int rowIndex = beginRowIndex; rowIndex < lastRowIndexExcluded; rowIndex++) {
-						// TODO COLUMNS NOW
-						int beginColumnIndex, lastColumnIndexExcluded;
+					mi = this.getRowAndColumnIndexes(currentRowMatrixSplitGroup, graph.size());
+					
+					// If we the client square has at least some spots in the upper triangle
+					if (mi.lastColumnIndexExcluded > mi.beginRowIndex) {
 						
-						matrixIndexes = this.getRowIndexes(i, graph.size());
-						beginColumnIndex = matrixIndexes.beginColumnIndex;
-						lastColumnIndexExcluded = matrixIndexes.lastColumnIndexExcluded;
+						// We should skip this loop if we know that we will have a square out of upper triangle
+						for (int rowIndex = mi.beginRowIndex; rowIndex < mi.lastRowIndexExcluded; rowIndex++) {
 						
-						// TODO only compute for the upper triangle!
+							// Only compute this row for the upper triangle!
+							beginColumnIndex = Math.max(mi.beginColumnIndex, rowIndex + 1);
 						
-						for (int columnIndex = beginColumnIndex; columnIndex < lastColumnIndexExcluded; columnIndex++) {
-							
-							// We do that only if we are in the upper triangle... 
-							// TODO Needs to catch before if we are in the upper triangle
-							// to avoid looping unnecessarily
-							
-							if (columnIndex > rowIndex) {
+							for (int columnIndex = beginColumnIndex; columnIndex < mi.lastColumnIndexExcluded; columnIndex++) {
 								// We flip the value of the cell in the graph
 								graph.flipValue(rowIndex, columnIndex);
 							
 								// We check if number of cliques decreased: it's a good
 								// thing
 								cliquesCount = new CliqueCounter(graph.getRawGraph())
-										.getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
+									.getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
 
 								if ((cliquesCount < bestCliquesCount)
 										&& !fifoEdge.findEdge(rowIndex, columnIndex)) {
@@ -115,35 +104,12 @@ public class Strategy1Distributed extends Strategy {
 								}
 
 								// Set back the original value
-								graph.flipValue(rowIndex, columnIndex);
-							}							
+								graph.flipValue(rowIndex, columnIndex);						
+							}
 						}
 					}
+					
 				}
-				
-
-//				for (int i = 0; i < graph.size(); i++) {
-//					for (int j = i + 1; j < graph.size(); j++) {
-//
-//						// We flip the value of the cell in the graph
-//						graph.flipValue(i, j);
-//
-//						// We check if number of cliques decreased: it's a good
-//						// thing
-//						cliquesCount = new CliqueCounter(graph.getRawGraph())
-//								.getMonochromaticSubcliquesCountWithTerminate(bestCliquesCount);
-//
-//						if ((cliquesCount < bestCliquesCount)
-//								&& !fifoEdge.findEdge(i, j)) {
-//							bestCliquesCount = cliquesCount;
-//							best_i = i;
-//							best_j = j;
-//						}
-//
-//						// Set back the original value
-//						graph.flipValue(i, j);
-//					}
-//				}
 
 				if (bestCliquesCount == HIGH_LIMIT_CLIQUE_COUNT) {
 					System.out.println("No best edge found, terminating");
@@ -181,9 +147,9 @@ public class Strategy1Distributed extends Strategy {
 		matrixIndexes = new MatrixIndexes();
 		numberMatrixRowsPerClient = graphSize / this.numberOfMatrixSplits;
 		
-		matrixIndexes.beginRowIndex = currentRowMatrixSplitGroup * numberMatrixRowsPerClient;
+		matrixIndexes.beginRowIndex = (currentRowMatrixSplitGroup - 1) * numberMatrixRowsPerClient;
 		
-		if (currentRowMatrixSplitGroup == this.numberOfMatrixSplits - 1) {
+		if (currentRowMatrixSplitGroup == this.numberOfMatrixSplits) {
 			matrixIndexes.lastRowIndexExcluded = graphSize;
 		}
 		else {
@@ -203,13 +169,14 @@ public class Strategy1Distributed extends Strategy {
 		// If groupRow is even then the client attribution order is: 1 2 3 4 5
 		// If groupRow is odd then the client attribution order is:  5 4 3 2 1
 		
-		// even 0, 2 , 4...
-		if (currentRowMatrixSplitGroup % 2 == 0) {
+		// odd 1, 3 , ...
+		if (currentRowMatrixSplitGroup % 2 == 1) {
 			beginColumnIndex = (this.clientPositionInMatrixSplit - 1) * numberMatrixRowsPerClient;
 			
 			lastColumnIndexExcluded = (this.clientPositionInMatrixSplit == this.numberOfMatrixSplits) ? graphSize :
 				(beginColumnIndex + numberMatrixRowsPerClient);
 		}
+		// even 2, 4, ...
 		else {
 			beginColumnIndex = (this.numberOfMatrixSplits - this.clientPositionInMatrixSplit) * numberMatrixRowsPerClient;
 			lastColumnIndexExcluded = beginColumnIndex + numberMatrixRowsPerClient;
@@ -222,6 +189,23 @@ public class Strategy1Distributed extends Strategy {
 		matrixIndexes.lastColumnIndexExcluded = lastColumnIndexExcluded;
 		
 		return matrixIndexes;
+	}
+	
+	protected MatrixIndexes getRowAndColumnIndexes(int currentRowMatrixSplitGroup, 
+			int graphSize) {
+		MatrixIndexes resultMatrixIndexes, matrixIndexes;
+		
+		resultMatrixIndexes = new MatrixIndexes();
+		
+		matrixIndexes = this.getRowIndexes(currentRowMatrixSplitGroup, graphSize);
+		resultMatrixIndexes.beginRowIndex = matrixIndexes.beginRowIndex;
+		resultMatrixIndexes.lastRowIndexExcluded = matrixIndexes.lastRowIndexExcluded;
+		
+		matrixIndexes = this.getColumnIndexes(currentRowMatrixSplitGroup, graphSize);
+		resultMatrixIndexes.beginColumnIndex = matrixIndexes.beginColumnIndex;
+		resultMatrixIndexes.lastColumnIndexExcluded = matrixIndexes.lastColumnIndexExcluded;
+		
+		return resultMatrixIndexes;
 	}
 
 }
