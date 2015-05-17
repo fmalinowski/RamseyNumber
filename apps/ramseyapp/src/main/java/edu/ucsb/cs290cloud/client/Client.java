@@ -47,13 +47,13 @@ public class Client {
 		byte[] bytesToSend;
 
 		// BEGIN OF DEBUG PRINTS AREA
-		LOGGER.info("--------------------");
-		LOGGER.info("-> sending " + status);
+		LOGGER.debug("--------------------");
+		LOGGER.debug("-> sending " + status);
 		if (graph != null) {
-			LOGGER.info("Best Count: " + graph.getBestCount());
-			LOGGER.info(graph.printGraph());
+			LOGGER.debug("Best Count: " + graph.getBestCount());
+			LOGGER.debug(graph.printGraph());
 		}
-		LOGGER.info("--------------------");
+		LOGGER.debug("--------------------");
 		// END OF DEBUG PRINTS AREA
 		
 		messageToServer = new Message();
@@ -94,14 +94,14 @@ public class Client {
 		messageFromServer = Message.deserialize(receivedBytes);
 		
 		// BEGIN OF DEBUG PRINTS AREA
-		LOGGER.info("--------------------");
-		LOGGER.info("receive " + messageFromServer.getMessage());
+		LOGGER.debug("--------------------");
+		LOGGER.debug("receive " + messageFromServer.getMessage());
 		if (messageFromServer.getGraph() != null) {
-			LOGGER.info("Best Count: " + messageFromServer.getGraph().getBestCount());
-			LOGGER.info("Size: " + messageFromServer.getGraph().size());
-			LOGGER.info(messageFromServer.getGraph().printGraph());
+			LOGGER.debug("Best Count: " + messageFromServer.getGraph().getBestCount());
+			LOGGER.debug("Size: " + messageFromServer.getGraph().size());
+			LOGGER.debug(messageFromServer.getGraph().printGraph());
 		}
-		LOGGER.info("--------------------");
+		LOGGER.debug("--------------------");
 		// END OF DEBUG PRINTS AREA
 		
 		return messageFromServer;

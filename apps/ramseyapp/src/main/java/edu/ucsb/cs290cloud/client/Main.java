@@ -1,10 +1,14 @@
 package edu.ucsb.cs290cloud.client;
 
+import java.util.logging.Level;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.ucsb.cs290cloud.strategies.Strategy1;
 import edu.ucsb.cs290cloud.strategies.Strategy1Random;
@@ -24,6 +28,8 @@ public class Main {
 		String ipMasterNode;
 		String clientStrategy;
 		Class strategyClass;
+		
+		int matrixSplitsNb, clientPosInSplittedMatrix;		
 		
 		// Create the command line parser
 		parser = new DefaultParser();

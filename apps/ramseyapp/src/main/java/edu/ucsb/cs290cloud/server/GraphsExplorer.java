@@ -59,12 +59,12 @@ public class GraphsExplorer {
 		
 		this.addGraphBeingComputedToListAndKeepBestCounts(listGraphsBeingComputed, graph);
 		
-		LOGGER.info("----------------------");
-		LOGGER.info("GRAPH Being Computed");
-		LOGGER.info("Size: " + graph.size());
-		LOGGER.info("BestCount: " + graph.getBestCount());
-		LOGGER.info(graph.printGraph());
-		LOGGER.info("----------------------");
+		LOGGER.debug("----------------------");
+		LOGGER.debug("GRAPH Being Computed");
+		LOGGER.debug("Size: " + graph.size());
+		LOGGER.debug("BestCount: " + graph.getBestCount());
+		LOGGER.debug(graph.printGraph());
+		LOGGER.debug("----------------------");
 	}
 	
 	public int getMaxCounterExamplesSize() {
@@ -162,11 +162,11 @@ public class GraphsExplorer {
 		}
 		
 		// BEGIN OF DEBUG PRINTS AREA
-		LOGGER.info("----------------------");
-		LOGGER.info("GOT A COUNTER EXAMPLE!");
-		LOGGER.info("Size: " + graph.size());
-		LOGGER.info(graph.printGraph());
-		LOGGER.info("----------------------");
+		LOGGER.debug("----------------------");
+		LOGGER.debug("GOT A COUNTER EXAMPLE!");
+		LOGGER.debug("Size: " + graph.size());
+		LOGGER.debug(graph.printGraph());
+		LOGGER.debug("----------------------");
 		// END OF DEBUG PRINTS AREA
 	}
 }

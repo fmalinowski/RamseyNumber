@@ -36,7 +36,7 @@ public class ServerResponder implements Runnable {
 		receivedBytes = this.packet.getData();
 		messageFromClient = Message.deserialize(receivedBytes);
 
-		LOGGER.info("Got a Message");
+		LOGGER.debug("Got a Message");
 		
 		messageForClient = this.getNewTaskForClient(messageFromClient);
 		bytesToSend = messageForClient.serialize();
@@ -75,25 +75,25 @@ public class ServerResponder implements Runnable {
 		graphFromClient = messageFromClient.getGraph();
 		
 		if (messageFromClient.getMessage().equals("READY")) {
-			LOGGER.info("GOT A READY MESSAGE -> sending NEWGRAPH message");
+			LOGGER.debug("GOT A READY MESSAGE -> sending NEWGRAPH message");
 			graphForClient = this.scheduler.getNewTask();
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
-			LOGGER.info("GOT A COUNTER EXAMPLE MESSAGE -> sending NEWGRAPH message");
+			LOGGER.debug("GOT A COUNTER EXAMPLE MESSAGE -> sending NEWGRAPH message");
 			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
 			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
-			LOGGER.info("GOT A STATUS MESSAGE");
+			LOGGER.debug("GOT A STATUS MESSAGE");
 			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
 			
 			if (graphForClient == null) {
-				LOGGER.info("-> sending CONTINUE message");
+				LOGGER.debug("-> sending CONTINUE message");
 				answerForClient.setMessage("CONTINUE");
 			}
 			else {
-				LOGGER.info("-> sending NEWGRAPH message");
+				LOGGER.debug("-> sending NEWGRAPH message");
 				answerForClient.setMessage("NEWGRAPH");
 			}
 		}

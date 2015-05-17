@@ -22,7 +22,7 @@ public class Server implements Runnable {
 		
 		try {
 			this.serverSocket = new DatagramSocket(port);
-			LOGGER.info("Waiting for clients on port " +
+			LOGGER.debug("Waiting for clients on port " +
 					this.serverSocket.getLocalPort() + "...");
 		} catch (SocketException e) {
 			LOGGER.error("ERROR: impossible to create a Datagram Socket");
@@ -46,11 +46,11 @@ public class Server implements Runnable {
 			buffer = new byte[BUFFER_SIZE];
 			packet = new DatagramPacket(buffer, buffer.length);
 
-			LOGGER.info("WAITING FOR PACKET");
+			LOGGER.debug("WAITING FOR PACKET");
 
 			try {
 				this.serverSocket.receive(packet);
-				LOGGER.info("udp Packet Received");
+				LOGGER.debug("udp Packet Received");
 				new Thread(new ServerResponder(this.serverSocket, packet, this.scheduler)).start();
 			} catch (Exception e) {
 				e.printStackTrace();

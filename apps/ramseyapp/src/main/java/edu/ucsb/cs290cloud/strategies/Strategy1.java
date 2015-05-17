@@ -33,10 +33,10 @@ public class Strategy1 extends Strategy {
 			// 0 subclique so we found a counter example
 			if (cliquesCount == 0) {
 				// BEGIN OF DEBUG PRINTS AREA
-				LOGGER.info("Found a counter-example");
-				LOGGER.info("size: " + graph.size());
-				LOGGER.info(graph.printGraph());
-				LOGGER.info("--------------");
+				LOGGER.debug("Found a counter-example");
+				LOGGER.debug("size: " + graph.size());
+				LOGGER.debug(graph.printGraph());
+				LOGGER.debug("--------------");
 				// END OF DEBUG PRINTS AREA
 				
 				// Save the counter example and end the computation because  
@@ -75,7 +75,7 @@ public class Strategy1 extends Strategy {
 				}
 
 				if (bestCliquesCount == HIGH_LIMIT_CLIQUE_COUNT) {
-					LOGGER.info("No best edge found, terminating");
+					LOGGER.debug("No best edge found, terminating");
 					return;
 				}
 
