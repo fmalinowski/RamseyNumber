@@ -1,8 +1,11 @@
 package edu.ucsb.cs290cloud.strategies;
 
+import java.util.HashMap;
+
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
 import edu.ucsb.cs290cloud.commons.FIFOEdge;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +30,14 @@ public class Strategy1Distributed extends Strategy {
 		this.numberOfMatrixSplits = numberOfMatrixSplits; // from 1 to graphSize
 		this.clientPositionInMatrixSplit = clientPositionInMatrixSplit; // from 1 to numberOfMatrixSplits included 
 	}
+	
+	public Strategy1Distributed(HashMap<String, String> strategyParameters) {
+		if (strategyParameters.containsKey("numberOfMatrixSplits") && 
+				strategyParameters.containsKey("clientPositionInMatrixSplit")) {
+			this.numberOfMatrixSplits = Integer.parseInt(strategyParameters.get("numberOfMatrixSplits"));
+			this.clientPositionInMatrixSplit = Integer.parseInt(strategyParameters.get("clientPositionInMatrixSplit"));
+		} 
+	} 
 	
 	@Override
 	public void runStrategy() {

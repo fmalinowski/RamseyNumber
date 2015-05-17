@@ -1,5 +1,7 @@
 package edu.ucsb.cs290cloud.strategies;
 
+import java.util.HashMap;
+
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 
 public abstract class Strategy extends Thread {

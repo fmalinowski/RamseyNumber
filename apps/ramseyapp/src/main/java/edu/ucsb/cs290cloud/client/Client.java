@@ -6,10 +6,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
 import edu.ucsb.cs290cloud.strategies.Strategy;
+import edu.ucsb.cs290cloud.strategies.Strategy1Distributed;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +44,7 @@ public class Client {
 		}
 	}
 	
-	public void sendMessage(String status, GraphWithInfos graph) {
+	public void sendMessage(String status, GraphWithInfos graph, Class strategyClass) {
 		Message messageToServer;
 		DatagramPacket sendPacket;
 		byte[] bytesToSend;
@@ -63,6 +66,8 @@ public class Client {
 		if (graph != null) {
 			messageToServer.setGraph(graph.clone());
 		}
+		
+		messageToServer.setStrategyClass(strategyClass);
 		
 		bytesToSend = messageToServer.serialize();
 		
@@ -112,8 +117,12 @@ public class Client {
 		GraphWithInfos graph, receivedGraph;
 		Message messageFromServer;
 		String statusString;
+		Class strategyClass;
+		HashMap<String, String> strategyParameters;
 		
-		this.sendMessage("READY", null);
+		strategyClass = this.strategyClass;
+		
+		this.sendMessage("READY", null, strategyClass);
 		messageFromServer = this.receiveMessage();
 		
 		this.strategyThread.setInitialGraph(messageFromServer.getGraph());
@@ -131,13 +140,17 @@ public class Client {
 			
 			statusString = status == Strategy.Status.COUNTER_EXAMPLE ? "COUNTEREXAMPLE" : "STATUS";
 
-			this.sendMessage(statusString, graph);
+			this.sendMessage(statusString, graph, strategyClass);
 			messageFromServer = this.receiveMessage();
 			if (messageFromServer.getMessage().equals("NEWGRAPH")) {
 				this.strategyThread.stop();
 				receivedGraph = messageFromServer.getGraph();
+				strategyParameters = messageFromServer.getStrategyParameters();
 
 				try {
+					if (this.strategyClass.equals(Strategy1Distributed.class)) {
+						this.strategyThread = new Strategy1Distributed(strategyParameters);
+					}
 					this.strategyThread = (Strategy) this.strategyClass.newInstance();
 				} catch (Exception e) {
 					e.printStackTrace();

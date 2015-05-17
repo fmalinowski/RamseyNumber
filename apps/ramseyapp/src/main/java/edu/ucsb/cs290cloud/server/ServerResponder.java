@@ -10,10 +10,12 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.logging.Logger;
 
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
+
 import org.slf4j.LoggerFactory;
 
 public class ServerResponder implements Runnable {
@@ -38,7 +40,7 @@ public class ServerResponder implements Runnable {
 
 		LOGGER.info("Got a Message");
 		
-		messageForClient = this.getNewTaskForClient(messageFromClient);
+		messageForClient = this.getNewTaskForClient(messageFromClient, this.packet.getSocketAddress());
 		bytesToSend = messageForClient.serialize();
 		this.sendMessage(bytesToSend);
 	}
@@ -48,7 +50,7 @@ public class ServerResponder implements Runnable {
 		
 		responsePacket = new DatagramPacket(bytesToSend, bytesToSend.length, 
 	    		this.packet.getAddress(), this.packet.getPort());
-	    
+		
 	    try {
 			this.serverSocket.send(responsePacket);
 		} catch (IOException e) {
@@ -56,7 +58,7 @@ public class ServerResponder implements Runnable {
 		}
 	}
 	
-	public Message getNewTaskForClient(Message messageFromClient) {
+	public Message getNewTaskForClient(Message messageFromClient, SocketAddress clientSocketAddress) {
 		GraphWithInfos graphForClient, graphFromClient;
 		Message answerForClient;
 		
@@ -76,29 +78,30 @@ public class ServerResponder implements Runnable {
 		
 		if (messageFromClient.getMessage().equals("READY")) {
 			LOGGER.info("GOT A READY MESSAGE -> sending NEWGRAPH message");
-			graphForClient = this.scheduler.getNewTask();
-			answerForClient.setMessage("NEWGRAPH");
+			answerForClient = this.scheduler.processReadyMessage(messageFromClient, clientSocketAddress);
 		}
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
 			LOGGER.info("GOT A COUNTER EXAMPLE MESSAGE -> sending NEWGRAPH message");
-			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
-			answerForClient.setMessage("NEWGRAPH");
+			answerForClient = this.scheduler.processFoundCounterExample(messageFromClient, clientSocketAddress);
+			
+//			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
+//			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
 			LOGGER.info("GOT A STATUS MESSAGE");
-			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
+//			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
 			
-			if (graphForClient == null) {
-				LOGGER.info("-> sending CONTINUE message");
-				answerForClient.setMessage("CONTINUE");
-			}
-			else {
-				LOGGER.info("-> sending NEWGRAPH message");
-				answerForClient.setMessage("NEWGRAPH");
-			}
+//			if (graphForClient == null) {
+//				LOGGER.info("-> sending CONTINUE message");
+//				answerForClient.setMessage("CONTINUE");
+//			}
+//			else {
+//				LOGGER.info("-> sending NEWGRAPH message");
+//				answerForClient.setMessage("NEWGRAPH");
+//			}
+			
+			answerForClient = this.scheduler.processStatusUpdateFromClient(messageFromClient, clientSocketAddress);
 		}
-		
-		answerForClient.setGraph(graphForClient);
 		
 		return answerForClient;
 	}

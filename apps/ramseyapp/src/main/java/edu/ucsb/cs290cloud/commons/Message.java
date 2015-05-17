@@ -7,12 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Message implements Serializable {
 	
 	private static final long serialVersionUID = -186320699428979457L;
 	private String message;
 	private GraphWithInfos graphWithInfos;
+	private Class strategyClass;
+	private HashMap<String, String> strategyParameters = new HashMap<String, String>();
+	
+//	private int numberOfMatrixSplits; // Only for strategy1Distributed
+//	private int clientPositionInMatrixSplit; // Only for strategy1Distributed
 	
 	public GraphWithInfos getGraph() {
 		return graphWithInfos;
@@ -25,6 +31,31 @@ public class Message implements Serializable {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public Class getStrategyClass() {
+		return strategyClass;
+	}
+	public void setStrategyClass(Class strategyClass) {
+		this.strategyClass = strategyClass;
+	}
+//	public int getNumberOfMatrixSplits() {
+//		return numberOfMatrixSplits;
+//	}
+//	public void setNumberOfMatrixSplits(int numberOfMatrixSplits) {
+//		this.numberOfMatrixSplits = numberOfMatrixSplits;
+//	}	
+//	public int getClientPositionInMatrixSplit() {
+//		return clientPositionInMatrixSplit;
+//	}
+//	public void setClientPositionInMatrixSplit(int clientPositionInMatrixSplit) {
+//		this.clientPositionInMatrixSplit = clientPositionInMatrixSplit;
+//	}
+	
+	public HashMap<String, String> getStrategyParameters() {
+		return strategyParameters;
+	}
+	public void setStrategyParameters(HashMap<String, String> strategyParameters) {
+		this.strategyParameters = strategyParameters;
 	}
 	
 	public byte[] serialize() {
