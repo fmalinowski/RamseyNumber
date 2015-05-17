@@ -30,11 +30,6 @@ public class Client {
 		this.port = port;
 		this.host = host;
 		this.strategyClass = strategyClass;
-		try {
-			this.strategyThread = (Strategy) strategyClass.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		try {
 			this.serverIPAddress = InetAddress.getByName(host);
@@ -125,6 +120,20 @@ public class Client {
 		this.sendMessage("READY", null, strategyClass);
 		messageFromServer = this.receiveMessage();
 		
+		try {
+			if (this.strategyClass.equals(Strategy1Distributed.class)) {
+				strategyParameters = messageFromServer.getStrategyParameters();
+				System.out.println("STRAT numberOfMatrixSplits:" + strategyParameters.get("numberOfMatrixSplits"));
+				System.out.println("STRAT clientPositionInMatrixSplit:" + strategyParameters.get("clientPositionInMatrixSplit"));
+				this.strategyThread = new Strategy1Distributed(strategyParameters);
+			}
+			else {
+				this.strategyThread = (Strategy) this.strategyClass.newInstance();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		this.strategyThread.setInitialGraph(messageFromServer.getGraph());
 		this.strategyThread.start();
 
@@ -145,13 +154,17 @@ public class Client {
 			if (messageFromServer.getMessage().equals("NEWGRAPH")) {
 				this.strategyThread.stop();
 				receivedGraph = messageFromServer.getGraph();
-				strategyParameters = messageFromServer.getStrategyParameters();
 
 				try {
 					if (this.strategyClass.equals(Strategy1Distributed.class)) {
+						strategyParameters = messageFromServer.getStrategyParameters();
+						System.out.println("STRAT numberOfMatrixSplits:" + strategyParameters.get("numberOfMatrixSplits"));
+						System.out.println("STRAT clientPositionInMatrixSplit:" + strategyParameters.get("clientPositionInMatrixSplit"));
 						this.strategyThread = new Strategy1Distributed(strategyParameters);
 					}
-					this.strategyThread = (Strategy) this.strategyClass.newInstance();
+					else {
+						this.strategyThread = (Strategy) this.strategyClass.newInstance();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

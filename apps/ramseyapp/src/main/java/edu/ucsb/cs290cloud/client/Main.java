@@ -7,6 +7,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import edu.ucsb.cs290cloud.strategies.Strategy1;
+import edu.ucsb.cs290cloud.strategies.Strategy1Distributed;
 import edu.ucsb.cs290cloud.strategies.Strategy1Random;
 
 public class Main {
@@ -54,6 +55,9 @@ public class Main {
 	public static Class getStrategyClass(String strategyString) {
 		if (strategyString.equalsIgnoreCase("strategy1random")) {
 			return Strategy1Random.class;
+		}
+		else if (strategyString.equalsIgnoreCase("strategy1distributed")) {
+			return Strategy1Distributed.class;
 		}
 		else {
 			return Strategy1.class;

@@ -25,6 +25,8 @@ public class Strategy1 extends Strategy {
 		fifoEdge = new FIFOEdge(TABOO_SIZE);
 		best_i = -1;
 		best_j = -1;
+		
+		bestCliquesCount = HIGH_LIMIT_CLIQUE_COUNT;
 
 		while (graph.size() < MAX_GRAPH_SIZE) {
 			cliquesCount = new CliqueCounter(graph.getRawGraph())
@@ -49,7 +51,6 @@ public class Strategy1 extends Strategy {
 				// We flip an edge, record the new count and unflip the edge.
 				// We'll remember the best flip and keep it next time
 				// We work only with the upper part of the matrix
-				bestCliquesCount = HIGH_LIMIT_CLIQUE_COUNT;
 
 				for (int i = 0; i < graph.size(); i++) {
 					for (int j = i + 1; j < graph.size(); j++) {

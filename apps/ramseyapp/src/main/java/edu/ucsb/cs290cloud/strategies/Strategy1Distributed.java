@@ -55,6 +55,8 @@ public class Strategy1Distributed extends Strategy {
 		fifoEdge = new FIFOEdge(TABOO_SIZE);
 		best_i = -1;
 		best_j = -1;
+		
+		bestCliquesCount = HIGH_LIMIT_CLIQUE_COUNT;
 
 		while (graph.size() < MAX_GRAPH_SIZE) {
 			cliquesCount = new CliqueCounter(graph.getRawGraph())
@@ -76,9 +78,7 @@ public class Strategy1Distributed extends Strategy {
 				return;
 				
 			} 
-			else {
-				bestCliquesCount = HIGH_LIMIT_CLIQUE_COUNT;
-				
+			else {				
 				// If matrixSize / numberOfMatrixSplits is not integer
 				// then the last big squares (last rows) need to be bigger
 				// for instance if size 81 and split is 4, last split will be from 59 to 80!
