@@ -26,9 +26,16 @@ public class Strategy1Distributed extends Strategy {
 	private int numberOfMatrixSplits;
 	private int clientPositionInMatrixSplit;
 	
-	public Strategy1Distributed(int numberOfMatrixSplits, int clientPositionInMatrixSplit) {	
+	public Strategy1Distributed(int numberOfMatrixSplits, int clientPositionInMatrixSplit) {
+		HashMap<String, String> strategyParameters;
+		
 		this.numberOfMatrixSplits = numberOfMatrixSplits; // from 1 to graphSize
-		this.clientPositionInMatrixSplit = clientPositionInMatrixSplit; // from 1 to numberOfMatrixSplits included 
+		this.clientPositionInMatrixSplit = clientPositionInMatrixSplit; // from 1 to numberOfMatrixSplits included
+		
+		strategyParameters = new HashMap<String, String>();
+		strategyParameters.put("numberOfMatrixSplits", String.valueOf(numberOfMatrixSplits));
+		strategyParameters.put("clientPositionInMatrixSplit", String.valueOf(clientPositionInMatrixSplit));
+		this.setExtraStrategyParameters(strategyParameters);
 	}
 	
 	public Strategy1Distributed(HashMap<String, String> strategyParameters) {
@@ -36,6 +43,8 @@ public class Strategy1Distributed extends Strategy {
 				strategyParameters.containsKey("clientPositionInMatrixSplit")) {
 			this.numberOfMatrixSplits = Integer.parseInt(strategyParameters.get("numberOfMatrixSplits"));
 			this.clientPositionInMatrixSplit = Integer.parseInt(strategyParameters.get("clientPositionInMatrixSplit"));
+			
+			this.setExtraStrategyParameters(strategyParameters);
 		} 
 	} 
 	

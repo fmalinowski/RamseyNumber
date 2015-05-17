@@ -83,23 +83,9 @@ public class ServerResponder implements Runnable {
 		else if (messageFromClient.getMessage().equals("COUNTEREXAMPLE")) {
 			LOGGER.info("GOT A COUNTER EXAMPLE MESSAGE -> sending NEWGRAPH message");
 			answerForClient = this.scheduler.processFoundCounterExample(messageFromClient, clientSocketAddress);
-			
-//			graphForClient = this.scheduler.processFoundCounterExample(graphFromClient);
-//			answerForClient.setMessage("NEWGRAPH");
 		}
 		else if(messageFromClient.getMessage().equals("STATUS")) {
-			LOGGER.info("GOT A STATUS MESSAGE");
-//			graphForClient = this.scheduler.processStatusUpdateFromClient(graphFromClient);
-			
-//			if (graphForClient == null) {
-//				LOGGER.info("-> sending CONTINUE message");
-//				answerForClient.setMessage("CONTINUE");
-//			}
-//			else {
-//				LOGGER.info("-> sending NEWGRAPH message");
-//				answerForClient.setMessage("NEWGRAPH");
-//			}
-			
+			LOGGER.info("GOT A STATUS MESSAGE");			
 			answerForClient = this.scheduler.processStatusUpdateFromClient(messageFromClient, clientSocketAddress);
 		}
 		

@@ -14,6 +14,7 @@ public abstract class Strategy extends Thread {
 	
 	private volatile Status strategyStatus;
 	private volatile GraphWithInfos currentGraph;
+	private volatile HashMap<String, String> strategyExtraParameters;
 	
 	public abstract void runStrategy();
 	
@@ -46,6 +47,14 @@ public abstract class Strategy extends Thread {
 			return this.currentGraph.clone();
 		}
 		return null;
+	}
+	
+	public synchronized HashMap<String, String> getExtraStrategyParameters() {
+		return this.strategyExtraParameters;
+	}
+	
+	protected synchronized void setExtraStrategyParameters(HashMap<String, String> params) {
+		this.strategyExtraParameters = params;
 	}
 	
 	public void resetStrategy() {

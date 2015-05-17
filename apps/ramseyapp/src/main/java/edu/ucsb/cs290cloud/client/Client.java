@@ -26,6 +26,8 @@ public class Client {
 	private Class strategyClass;
 	private Strategy strategyThread;
 	
+	public final static int SLEEP_TIME = 10000;
+	
 	public Client(int port, String host, Class strategyClass) {
 		this.port = port;
 		this.host = host;
@@ -39,7 +41,8 @@ public class Client {
 		}
 	}
 	
-	public void sendMessage(String status, GraphWithInfos graph, Class strategyClass) {
+	public void sendMessage(String status, GraphWithInfos graph, Class strategyClass, 
+			HashMap<String, String> extraStrategyParameters) {
 		Message messageToServer;
 		DatagramPacket sendPacket;
 		byte[] bytesToSend;
@@ -63,6 +66,7 @@ public class Client {
 		}
 		
 		messageToServer.setStrategyClass(strategyClass);
+		messageToServer.setStrategyParameters(extraStrategyParameters);
 		
 		bytesToSend = messageToServer.serialize();
 		
@@ -117,7 +121,7 @@ public class Client {
 		
 		strategyClass = this.strategyClass;
 		
-		this.sendMessage("READY", null, strategyClass);
+		this.sendMessage("READY", null, strategyClass, null);
 		messageFromServer = this.receiveMessage();
 		
 		try {
@@ -139,17 +143,18 @@ public class Client {
 
 		while (true) {
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(SLEEP_TIME);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 			status = this.strategyThread.getStrategyStatus();
 			graph = this.strategyThread.getGraph();
+			strategyParameters = this.strategyThread.getExtraStrategyParameters();
 			
 			statusString = status == Strategy.Status.COUNTER_EXAMPLE ? "COUNTEREXAMPLE" : "STATUS";
 
-			this.sendMessage(statusString, graph, strategyClass);
+			this.sendMessage(statusString, graph, strategyClass, strategyParameters);
 			messageFromServer = this.receiveMessage();
 			if (messageFromServer.getMessage().equals("NEWGRAPH")) {
 				this.strategyThread.stop();

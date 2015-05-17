@@ -145,8 +145,7 @@ public class Scheduler {
 		graphFromClient = messageFromClient.getGraph();
 		
 		this.graphsExplorer.addGraphBeingComputed(graphFromClient);
-		newGraphForClient = this.getNewTask(); 
-		
+		newGraphForClient = this.getNewTask();
 		
 		// If best graph being computed is the one just committed by the client,
 		// the client will continue on his graph.
@@ -161,10 +160,11 @@ public class Scheduler {
 		if (messageFromClient.getStrategyClass().equals(Strategy1Distributed.class)) {
 			int clientPositionBeforeListUpdate, numberOfMatrixSplitsBeforeListUpdate;
 			int numberOfMatrixSplits, clientPositionInMatrixSplit;
-			HashMap<String, String> strategyParametersForClient;
+			HashMap<String, String> strategyParametersFromClient, strategyParametersForClient;
 			
-			clientPositionBeforeListUpdate = this.getPositionOfClientInStrategy1DistributedList(clientSocketAddress);
-			numberOfMatrixSplitsBeforeListUpdate = this.getNumberOfClientsInStrategy1DistributedList();
+			strategyParametersFromClient = messageFromClient.getStrategyParameters();
+			clientPositionBeforeListUpdate = Integer.parseInt(strategyParametersFromClient.get("clientPositionInMatrixSplit"));
+			numberOfMatrixSplitsBeforeListUpdate = Integer.parseInt(strategyParametersFromClient.get("clientPositionInMatrixSplit"));
 			
 			strategyParametersForClient = this.getInstructionsForStrategy1Distributed(clientSocketAddress);
 			numberOfMatrixSplits = Integer.parseInt(strategyParametersForClient.get("numberOfMatrixSplits"));
