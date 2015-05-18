@@ -10,6 +10,8 @@ import java.net.UnknownHostException;
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.commons.Message;
 import edu.ucsb.cs290cloud.strategies.Strategy;
+import edu.ucsb.cs290cloud.strategies.Strategy1Distributed;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,14 +25,27 @@ public class Client {
 	private Class strategyClass;
 	private Strategy strategyThread;
 	
-	public Client(int port, String host, Class strategyClass) {
+	private int matrixSplitsNb;
+	private int clientPosInSplittedMatrix;
+	
+	public Client(int port, String host, Class strategyClass, int matrixSplitsNb, int clientPosInSplittedMatrix) {
 		this.port = port;
 		this.host = host;
 		this.strategyClass = strategyClass;
-		try {
-			this.strategyThread = (Strategy) strategyClass.newInstance();
-		} catch (Exception e) {
-			e.printStackTrace();
+		
+		// Only for Strategy 1 distributed
+		this.matrixSplitsNb = matrixSplitsNb;
+		this.clientPosInSplittedMatrix = clientPosInSplittedMatrix;
+		
+		if (strategyClass.equals(Strategy1Distributed.class)) {
+			this.strategyThread = new Strategy1Distributed(matrixSplitsNb, clientPosInSplittedMatrix);
+		}
+		else {
+			try {
+				this.strategyThread = (Strategy) strategyClass.newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		try {
@@ -137,10 +152,15 @@ public class Client {
 				this.strategyThread.stop();
 				receivedGraph = messageFromServer.getGraph();
 
-				try {
-					this.strategyThread = (Strategy) this.strategyClass.newInstance();
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (strategyClass.equals(Strategy1Distributed.class)) {
+					this.strategyThread = new Strategy1Distributed(this.matrixSplitsNb, this.clientPosInSplittedMatrix);
+				}
+				else {
+					try {
+						this.strategyThread = (Strategy) this.strategyClass.newInstance();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				this.strategyThread.setInitialGraph(receivedGraph);
 				this.strategyThread.start();
