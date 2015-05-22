@@ -133,7 +133,7 @@ public class Strategy1Distributed extends Strategy {
 			}
 		}
 
-		System.out.println("Thread killed!");
+//		System.out.println("Thread killed!");
 		
 //		fifoEdge.resetFIFO();
 	}
