@@ -26,6 +26,7 @@ public class Strategy1Random extends Strategy {
         cliquesCount = new CliqueCounter(graph.getRawGraph())
                 .getMonochromaticSubcliquesCount();
         bestCliquesCount = cliquesCount;
+        graph.setBestCount(cliquesCount);
         this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
         int i,j;
@@ -33,6 +34,7 @@ public class Strategy1Random extends Strategy {
             // 0 subcliques so we found a counter example
             if (cliquesCount == 0) {
                 LOGGER.info("Found a counter-example\n" + graph.printGraph() + "\n----------");
+                graph.setBestCount(0);
                 this.setStrategyStatus(Strategy.Status.COUNTER_EXAMPLE, graph);
                 return;
             }
