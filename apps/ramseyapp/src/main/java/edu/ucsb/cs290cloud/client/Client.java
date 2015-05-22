@@ -149,7 +149,7 @@ public class Client {
 			this.sendMessage(statusString, graph);
 			messageFromServer = this.receiveMessage();
 			if (messageFromServer.getMessage().equals("NEWGRAPH")) {
-				this.strategyThread.stop();
+				this.strategyThread.kill();
 				receivedGraph = messageFromServer.getGraph();
 
 				if (strategyClass.equals(Strategy1Distributed.class)) {
