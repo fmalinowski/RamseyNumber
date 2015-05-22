@@ -29,7 +29,7 @@ public class Strategy1Random extends Strategy {
         this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
         int i,j;
-        while (graph.size() < MAX_GRAPH_SIZE) {
+        while (this.isThreadAlive() && graph.size() < MAX_GRAPH_SIZE) {
             // 0 subcliques so we found a counter example
             if (cliquesCount == 0) {
                 LOGGER.info("Found a counter-example\n" + graph.printGraph() + "\n----------");

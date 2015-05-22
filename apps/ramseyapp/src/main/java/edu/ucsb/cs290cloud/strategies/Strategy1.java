@@ -28,7 +28,7 @@ public class Strategy1 extends Strategy {
 		
 		bestCliquesCount = graph.getBestCount();
 
-		while (graph.size() < MAX_GRAPH_SIZE) {
+		while (this.isThreadAlive() && graph.size() < MAX_GRAPH_SIZE) {
 			cliquesCount = new CliqueCounter(graph.getRawGraph())
 					.getMonochromaticSubcliquesCount();
 
@@ -52,8 +52,8 @@ public class Strategy1 extends Strategy {
 				// We'll remember the best flip and keep it next time
 				// We work only with the upper part of the matrix
 
-				for (int i = 0; i < graph.size(); i++) {
-					for (int j = i + 1; j < graph.size(); j++) {
+				for (int i = 0; i < graph.size() && this.isThreadAlive(); i++) {
+					for (int j = i + 1; j < graph.size() && this.isThreadAlive(); j++) {
 
 						// We flip the value of the cell in the graph
 						graph.flipValue(i, j);

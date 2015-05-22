@@ -20,6 +20,8 @@ public class GraphWithInfos extends Graph {
 	private Status status; 
 	private int timeSpentOnBestCount;
 	private String strategyUsed;
+	private int graphGenerationID;
+	private long submittedAt;
 
 	public GraphWithInfos(int size) {
 		super(size);
@@ -128,6 +130,8 @@ public class GraphWithInfos extends Graph {
 		newGraph.status = this.status;
 		newGraph.timeSpentOnBestCount = this.timeSpentOnBestCount;
 		newGraph.strategyUsed = this.strategyUsed;
+		newGraph.graphGenerationID = this.graphGenerationID;
+		newGraph.submittedAt = this.submittedAt;
 		
 		return newGraph;
 	}
@@ -166,5 +170,21 @@ public class GraphWithInfos extends Graph {
 	
 	public Boolean isCounterExample() {
 		return (new CliqueCounter(this.graph).getMonochromaticSubcliquesCount() == 0 );
+	}
+
+	public int getGraphGenerationID() {
+		return graphGenerationID;
+	}
+
+	public void setGraphGenerationID(int graphGenerationID) {
+		this.graphGenerationID = graphGenerationID;
+	}
+
+	public long getSubmittedAt() {
+		return submittedAt;
+	}
+
+	public void setSubmittedAt(long submittedAt) {
+		this.submittedAt = submittedAt;
 	}
 }

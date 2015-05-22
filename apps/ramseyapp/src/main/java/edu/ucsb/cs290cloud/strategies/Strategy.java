@@ -13,6 +13,21 @@ public abstract class Strategy extends Thread {
 	private volatile Status strategyStatus;
 	private volatile GraphWithInfos currentGraph;
 	
+	protected volatile Thread threadKiller;
+
+    public void start() {
+        this.threadKiller = new Thread(this);
+        this.threadKiller.start();
+    }
+
+    public void kill() {
+    	this.threadKiller = null;
+    }
+    
+    public Boolean isThreadAlive() {
+    	return this.threadKiller == Thread.currentThread();
+    }
+	
 	public abstract void runStrategy();
 	
 	public void run() {
@@ -23,12 +38,12 @@ public abstract class Strategy extends Thread {
 		this.setStrategyStatus(Status.BEING_COMPUTED, graph);
 	}
 	
-	protected GraphWithInfos getInitialGraph() {
+	protected synchronized GraphWithInfos getInitialGraph() {
 		return this.currentGraph.clone();
 	}
 	
 	protected synchronized void setStrategyStatus(Status status, GraphWithInfos graph) {
-		this.currentGraph = graph;
+		this.currentGraph = graph.clone();
 		this.strategyStatus = status;
 	}
 	
