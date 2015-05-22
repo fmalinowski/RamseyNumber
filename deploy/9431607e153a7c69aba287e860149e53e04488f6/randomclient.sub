@@ -1,0 +1,20 @@
+####################
+#
+# Example 2
+# Execute a single Java class,
+# not on a shared file system
+#
+# executable = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+# jar_files  = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+# arguments  = edu.ucsb.cs290cloud.client.Main --strategy=strategy1Random
+####################
+
+  universe       = java
+  executable     = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+  arguments      = edu.ucsb.cs290cloud.client.Main --strategy=strategy1Random
+  
+  output         = Client.output
+  error          = Client.error
+  log 			= Client.log
+  queue 5
+  
