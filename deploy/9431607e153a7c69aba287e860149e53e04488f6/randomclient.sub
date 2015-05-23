@@ -11,10 +11,11 @@
 
   universe       = java
   executable     = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+  jar_files  	 = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
   arguments      = edu.ucsb.cs290cloud.client.Main --strategy=strategy1Random --ip=52.25.94.28
   
   output         = Client.output
   error          = Client.error
-  log 			= Client.log
+  log 			 = Client.log
   queue 5
   
