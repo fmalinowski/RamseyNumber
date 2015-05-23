@@ -32,7 +32,8 @@ public class Main {
 		
 		// Create the options
 		options = new Options();
-		options.addOption("l", "load", true, "How to load the counter examples. --load=remote being graphs stored remotely. --load=disk being graphs stored on disk");
+		options.addOption("l", "load", true, "How to load the counter examples. --load=remote being graphs stored remotely. --load=disk being graphs stored on disk --load=generate");
+		options.addOption("s", "size", true, "Size of the initial graph being generated in case the laod option is generate.");
 		
 		cmd = null;
 		// Parse the command line arguments
@@ -44,6 +45,9 @@ public class Main {
 		
 		if (cmd.hasOption("l") && cmd.getOptionValue("l").equals("disk")) {
 			graphsExplorer.loadGraphsFromDisk();
+		}
+		else if(cmd.hasOption("l") && cmd.getOptionValue("l").equals("generate") && cmd.hasOption("s")) {
+			graphsExplorer.generateInitialGraph(Integer.parseInt(cmd.getOptionValue("s")));
 		}
 		else {
 			graphsExplorer.loadGraphsFromRemoteService();
