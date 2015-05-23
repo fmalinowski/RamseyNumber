@@ -11,6 +11,7 @@
 
 universe       = java
 executable     = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
+jar_files 		= ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
 arguments      = edu.ucsb.cs290cloud.standalone.Main 99
  
 output         = standalone.output
