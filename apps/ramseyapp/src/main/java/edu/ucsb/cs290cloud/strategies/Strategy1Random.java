@@ -52,6 +52,8 @@ public class Strategy1Random extends Strategy {
                     if (cliquesCount < bestCliquesCount) {
                         fifoEdge.resetFIFO();
                         bestCliquesCount = cliquesCount;
+                        graph.setBestCount(cliquesCount);
+                        this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
                         LOGGER.info("Graph size: " + graph.size() + ", ");
                         LOGGER.info("Best count: " + bestCliquesCount + ", ");
@@ -109,6 +111,8 @@ public class Strategy1Random extends Strategy {
                     graph.flipValue(best_i, best_j);
                     fifoEdge.insertEdge(best_i,best_j);
                     cliquesCount = bestCliquesCount;
+                    graph.setBestCount(cliquesCount);
+					this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
                 }
             }
         }
