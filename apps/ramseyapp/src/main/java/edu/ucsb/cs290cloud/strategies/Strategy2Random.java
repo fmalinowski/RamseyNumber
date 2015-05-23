@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by ethan_000 on 5/10/2015.
  */
-public class Strategy1Random extends Strategy {
+public class Strategy2Random extends Strategy {
     public static final int TABOO_SIZE = 500;
     public static final int MAX_GRAPH_SIZE = 150;
-    static Logger LOGGER = LoggerFactory.getLogger(Strategy1Random.class);
+    static Logger LOGGER = LoggerFactory.getLogger(Strategy2Random.class);
     @Override
     public void runStrategy() {
         int cliquesCount, bestCliquesCount;
@@ -30,7 +30,7 @@ public class Strategy1Random extends Strategy {
         this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
         int i,j;
-        while (this.isThreadAlive() && graph.size() < MAX_GRAPH_SIZE) {
+        while (graph.size() < MAX_GRAPH_SIZE) {
             // 0 subcliques so we found a counter example
             if (cliquesCount == 0) {
                 LOGGER.info("Found a counter-example\n" + graph.printGraph() + "\n----------");
@@ -52,8 +52,6 @@ public class Strategy1Random extends Strategy {
                     if (cliquesCount < bestCliquesCount) {
                         fifoEdge.resetFIFO();
                         bestCliquesCount = cliquesCount;
-                        graph.setBestCount(cliquesCount);
-                        this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
                         LOGGER.info("Graph size: " + graph.size() + ", ");
                         LOGGER.info("Best count: " + bestCliquesCount + ", ");
@@ -74,8 +72,8 @@ public class Strategy1Random extends Strategy {
                 for (i = 0; i < graph.size(); i++) {
                     for (j = i + 1; j < graph.size(); j++) {
                         if(!fifoEdge.findEdge(i, j))
-                        // We flip the value of the cell in the graph
-                        graph.flipValue(i, j);
+                            // We flip the value of the cell in the graph
+                            graph.flipValue(i, j);
 
                         // We check if number of cliques decreased: it's a good
                         // thing
@@ -111,10 +109,6 @@ public class Strategy1Random extends Strategy {
                     graph.flipValue(best_i, best_j);
                     fifoEdge.insertEdge(best_i,best_j);
                     cliquesCount = bestCliquesCount;
-
-                    graph.setBestCount(cliquesCount);
-					this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
-
                 }
             }
         }
