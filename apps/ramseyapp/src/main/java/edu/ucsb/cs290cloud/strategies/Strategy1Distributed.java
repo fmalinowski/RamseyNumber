@@ -84,10 +84,10 @@ public class Strategy1Distributed extends Strategy {
 						
 							// Only compute this row for the upper triangle!
 							beginColumnIndex = Math.max(mi.beginColumnIndex, rowIndex + 1);
-//							System.out.println("Ibegin:" + mi.beginRowIndex + " | IendEx:" + mi.lastRowIndexExcluded + 
-//									" | JBegin:" + beginColumnIndex + " | JEnd: " + mi.lastColumnIndexExcluded + 
-//									" | PosInMatrix:" + this.clientPositionInMatrixSplit + 
-//									" | rowGroup:" + currentRowMatrixSplitGroup);
+							System.out.println("Ibegin:" + mi.beginRowIndex + " | IendEx:" + mi.lastRowIndexExcluded + 
+									" | JBegin:" + beginColumnIndex + " | JEnd: " + mi.lastColumnIndexExcluded + 
+									" | PosInMatrix:" + this.clientPositionInMatrixSplit + 
+									" | rowGroup:" + currentRowMatrixSplitGroup);
 						
 							for (int columnIndex = beginColumnIndex; columnIndex < mi.lastColumnIndexExcluded && this.isThreadAlive(); columnIndex++) {
 								// We flip the value of the cell in the graph
@@ -101,9 +101,9 @@ public class Strategy1Distributed extends Strategy {
 								if ((cliquesCount < bestCliquesCount)
 										&& !fifoEdge.findEdge(rowIndex, columnIndex)) {
 									bestCliquesCount = cliquesCount;
-//									System.out.println("FOUND BEST COUNT " + bestCliquesCount + " - bestI:" + rowIndex + " | bestJ:" + columnIndex + " |} graphSize:" + graph.size());
+									System.out.println("FOUND BEST COUNT " + bestCliquesCount + " - bestI:" + rowIndex + " | bestJ:" + columnIndex + " |} graphSize:" + graph.size());
 									
-//									System.out.println("FLIP BEST VALUE  " + bestCliquesCount + " - bestI:" + rowIndex + " | bestJ:" + columnIndex + " |} graphSize:" + graph.size());
+									System.out.println("FLIP BEST VALUE  " + bestCliquesCount + " - bestI:" + rowIndex + " | bestJ:" + columnIndex + " |} graphSize:" + graph.size());
 
 									// We taboo this configuration for the graph so that we don't
 									// visit it again
