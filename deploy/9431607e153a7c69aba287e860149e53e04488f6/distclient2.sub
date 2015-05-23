@@ -1,7 +1,7 @@
 universe = java
 executable = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
 jar_files = ramseyapp-1.0-SNAPSHOT-jar-with-dependencies.jar
-arguments = edu.ucsb.cs290cloud.client.Main --ip=52.25.94.28 --strategy=strategy1distributed -n 6 -p 2 
+arguments = edu.ucsb.cs290cloud.client.Main -i 52.25.94.28 -s strategy1distributed -n 6 -p 2 
 output = Client.output
 error = Client.error
 log = Client.log
