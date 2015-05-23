@@ -13,6 +13,8 @@ public abstract class Strategy extends Thread {
 	private volatile Status strategyStatus;
 	private volatile GraphWithInfos currentGraph;
 	
+	private volatile Boolean isStrategyStuck;
+	
 	protected volatile Thread threadKiller;
 
     public void start() {
@@ -64,5 +66,13 @@ public abstract class Strategy extends Thread {
 	public void resetStrategy() {
 		this.strategyStatus = Status.NOT_YET_STARTED;
 		this.currentGraph = null;
+	}
+	
+	protected void setStrategyStuck() {
+		this.isStrategyStuck = true;
+	}
+	
+	public Boolean isStrategyStuck() {
+		return this.isStrategyStuck;
 	}
 }

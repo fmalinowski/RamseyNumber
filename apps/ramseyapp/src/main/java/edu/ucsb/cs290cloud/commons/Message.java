@@ -13,6 +13,7 @@ public class Message implements Serializable {
 	private static final long serialVersionUID = -186320699428979457L;
 	private String message;
 	private GraphWithInfos graphWithInfos;
+	private Class strategyClass;
 	
 	public GraphWithInfos getGraph() {
 		return graphWithInfos;
@@ -60,5 +61,11 @@ public class Message implements Serializable {
 		}		
 		
 		return receivedMessage;
+	}
+	public Class getStrategyClass() {
+		return strategyClass;
+	}
+	public void setStrategyClass(Class strategyClass) {
+		this.strategyClass = strategyClass;
 	}
 }

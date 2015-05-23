@@ -79,6 +79,8 @@ public class Client {
 			messageToServer.setGraph(graph.clone());
 		}
 		
+		messageToServer.setStrategyClass(this.strategyClass);
+		
 		bytesToSend = messageToServer.serialize();
 		
 		sendPacket = new DatagramPacket(bytesToSend, bytesToSend.length, 
