@@ -4,9 +4,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import edu.ucsb.cs290cloud.commons.GraphFactory;
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.graphdao.GraphDao;
 import edu.ucsb.cs290cloud.graphdao.GraphDaoParse;
+
 import org.slf4j.LoggerFactory;
 
 public class GraphsExplorer {
@@ -136,6 +138,14 @@ public class GraphsExplorer {
 		if (bestCounterExampleStored.isCounterExample()) {
 			this.addNewCounterExampleWithStoreOption(bestCounterExampleStored, false);
 		}
+	}
+	
+	public void generateInitialGraph(int size) {
+		GraphWithInfos randomGraph;
+		
+		randomGraph = GraphFactory.generateRandomGraph(size);
+		// It's definitely not a counter example but we don't store it on remote service or on disk
+		this.addNewCounterExampleWithStoreOption(randomGraph, false);
 	}
 	
 	private void addNewCounterExampleWithStoreOption(GraphWithInfos graph, Boolean shouldStore) {
