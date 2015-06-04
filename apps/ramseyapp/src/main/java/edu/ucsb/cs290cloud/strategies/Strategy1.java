@@ -35,6 +35,7 @@ public class Strategy1 extends Strategy {
 			// 0 subclique so we found a counter example
 			if (cliquesCount == 0) {
 				// BEGIN OF DEBUG PRINTS AREA
+//				System.out.println("Found Counter example, size:" + graph.size());
 				LOGGER.info("Found a counter-example");
 				LOGGER.info("size: " + graph.size());
 				LOGGER.info(graph.printGraph());
@@ -92,6 +93,7 @@ public class Strategy1 extends Strategy {
 				this.setStrategyStatus(Strategy.Status.BEING_COMPUTED, graph);
 
 				// BEGIN OF DEBUG PRINTS AREA
+//				System.out.println("Best count:" + bestCliquesCount + " | size:" + graph.size());
 				LOGGER.debug("Graph size: " + graph.size() + ", ");
 				LOGGER.debug("Best count: " + bestCliquesCount + ", ");
 				LOGGER.debug("Best edge: (" + best_i + "," + best_j + "), ");

@@ -148,7 +148,13 @@ public class Client {
 
 			this.sendMessage(statusString, graph);
 			messageFromServer = this.receiveMessage();
-			if (messageFromServer.getMessage().equals("NEWGRAPH")) {
+			
+			if ((this.strategyClass.equals(Strategy1Distributed.class) && 
+					messageFromServer.getMessage().equals("NEWGRAPH")) 
+					||
+					(messageFromServer.getMessage().equals("NEWGRAPH") && 
+					(messageFromServer.getGraph().size() > graph.size()))) {
+				
 				this.strategyThread.kill();
 				receivedGraph = messageFromServer.getGraph();
 
