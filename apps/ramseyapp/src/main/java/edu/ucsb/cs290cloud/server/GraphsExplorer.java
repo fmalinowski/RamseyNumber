@@ -58,6 +58,7 @@ public class GraphsExplorer {
 		}
 		
 		graph.setStatus(GraphWithInfos.Status.BEING_COMPUTED);
+		graph.setSubmittedAt(System.currentTimeMillis());
 		
 		this.addGraphBeingComputedToListAndKeepBestCounts(listGraphsBeingComputed, graph);
 		
@@ -113,7 +114,7 @@ public class GraphsExplorer {
 		
 		for (index = 0; index < graphsList.size(); index++) {
 			// We add at the end of the list even if best count is same
-			if (graphsList.get(index).getBestCount() >= graph.getBestCount()) {
+			if (graphsList.get(index).getBestCount() > graph.getBestCount()) {
 				break;
 			}
 		}
@@ -144,8 +145,13 @@ public class GraphsExplorer {
 		GraphWithInfos randomGraph;
 		
 		randomGraph = GraphFactory.generateRandomGraph(size);
+		
 		// It's definitely not a counter example but we don't store it on remote service or on disk
 		this.addNewCounterExampleWithStoreOption(randomGraph, false);
+	}
+	
+	public void clearGraphsBeingComputedAtSize(int graphSize) {
+		this.graphsBeingComputed.remove(graphSize);
 	}
 	
 	private void addNewCounterExampleWithStoreOption(GraphWithInfos graph, Boolean shouldStore) {

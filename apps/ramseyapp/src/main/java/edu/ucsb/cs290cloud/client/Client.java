@@ -66,6 +66,7 @@ public class Client {
 		LOGGER.info("-> sending " + status);
 		if (graph != null) {
 			LOGGER.info("Best Count: " + graph.getBestCount());
+			LOGGER.info("Graph Round ID: " + graph.getGraphID());
 			LOGGER.info(graph.printGraph());
 		}
 		LOGGER.info("--------------------");
@@ -112,6 +113,7 @@ public class Client {
 		LOGGER.info("--------------------");
 		LOGGER.info("receive " + messageFromServer.getMessage());
 		if (messageFromServer.getGraph() != null) {
+			LOGGER.info("Graph Round ID: " + messageFromServer.getGraph().getGraphID());
 			LOGGER.info("Best Count: " + messageFromServer.getGraph().getBestCount());
 			LOGGER.info("Size: " + messageFromServer.getGraph().size());
 			LOGGER.info(messageFromServer.getGraph().printGraph());

@@ -16,7 +16,7 @@ public class GraphWithInfos extends Graph {
 	
 	private int parentGraphID;
 	private int bestCount = 9999999;
-	private int graphID;
+	private int graphID = 0;
 	private Status status; 
 	private int timeSpentOnBestCount;
 	private String strategyUsed;
@@ -186,5 +186,14 @@ public class GraphWithInfos extends Graph {
 
 	public void setSubmittedAt(long submittedAt) {
 		this.submittedAt = submittedAt;
+	}
+	
+	public void flipRandomEdges() {
+		int numberOfEdgesToFlip = (int) (this.size * .06);
+		
+		for (int i = 0; i < numberOfEdgesToFlip; i++) {
+			Pair<Integer, Integer> p = this.getRandomCoord();
+	        this.flipValue(p.getElement0(), p.getElement1());	
+		}
 	}
 }

@@ -2,14 +2,21 @@ package edu.ucsb.cs290cloud.server;
 
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.ucsb.cs290cloud.commons.GraphWithInfos;
 import edu.ucsb.cs290cloud.ramseychecker.CliqueCounter;
+import edu.ucsb.cs290cloud.strategies.Strategy1Distributed;
 import edu.ucsb.cs290cloud.commons.GraphFactory;
 
 public class Scheduler {
+	static Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
 
 	public final static int INITIAL_GENERATED_GRAPH_SIZE = 20;
 	private GraphsExplorer graphsExplorer;
+	
+	private int currentGraphID = 0;
 
 	public Scheduler(GraphsExplorer graphsExplorer) {
 		this.graphsExplorer = graphsExplorer;
@@ -29,7 +36,7 @@ public class Scheduler {
 		maxCounterExampleSize = this.graphsExplorer.getMaxCounterExamplesSize();
 		maxGraphBeingComputedSize = this.graphsExplorer
 				.getMaxGraphBeingComputedSize();
-
+		
 		if ((maxCounterExampleSize == 0) && (maxGraphBeingComputedSize == 0)) {
 			// Generate an initial graph of size X (it happens when we just
 			// launch master)
@@ -43,10 +50,27 @@ public class Scheduler {
 			graphForClient = graphForClient
 					.copyGraph(maxCounterExampleSize + 1);
 		} else {
-			// Return the graph being computed that has its size just above
-			// maxCounterExampleSize and with the lowest best count
 			graphForClient = this.graphsExplorer
 					.getGraphBeingComputedWithLowestBestCount(maxGraphBeingComputedSize);
+			
+			if (graphForClient.getSubmittedAt() < (System.currentTimeMillis()-120000)) {
+				LOGGER.info("Stuck at best count:" + graphForClient.getBestCount());
+				// Clear the graphBeingComputed list and set best count to be a very high value
+				this.graphsExplorer.clearGraphsBeingComputedAtSize(graphForClient.size());
+				graphForClient = graphForClient.clone();
+				graphForClient.flipRandomEdges();
+				graphForClient.setBestCount(new CliqueCounter(graphForClient.getRawGraph())
+				.getMonochromaticSubcliquesCount());
+				
+				this.currentGraphID++;
+				graphForClient.setGraphID(this.currentGraphID);
+				this.graphsExplorer.addGraphBeingComputed(graphForClient);
+				LOGGER.info("Flipping some random edges. Best Count is now:" + graphForClient.getBestCount());
+			}
+			
+			// Return the graph being computed that has its size just above
+			// maxCounterExampleSize and with the lowest best count
+			
 		}
 
 		return graphForClient;
@@ -90,7 +114,9 @@ public class Scheduler {
 		// best count that is one size bigger than the graph max size of counter
 		// example
 		GraphWithInfos newGraphForClient;
-		this.graphsExplorer.addGraphBeingComputed(graphFromClient);
+		if (this.currentGraphID <= graphFromClient.getGraphID()) {
+			this.graphsExplorer.addGraphBeingComputed(graphFromClient);
+		}
 		newGraphForClient = this.getNewTask(); 
 		
 		// If best graph being computed is the one just committed by the client,
