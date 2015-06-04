@@ -17,6 +17,7 @@ public class Scheduler {
 	private GraphsExplorer graphsExplorer;
 	
 	private int currentGraphID = 0;
+	private GraphWithInfos lowestCountGraph;
 
 	public Scheduler(GraphsExplorer graphsExplorer) {
 		this.graphsExplorer = graphsExplorer;
@@ -56,8 +57,15 @@ public class Scheduler {
 			if (graphForClient.getSubmittedAt() < (System.currentTimeMillis()-120000)) {
 				LOGGER.info("Stuck at best count:" + graphForClient.getBestCount());
 				// Clear the graphBeingComputed list and set best count to be a very high value
+				
+				if (this.lowestCountGraph == null || this.lowestCountGraph.size() < graphForClient.size() || 
+						(this.lowestCountGraph.size() == graphForClient.size() && 
+						this.lowestCountGraph.getBestCount() > graphForClient.getBestCount())) {
+					this.lowestCountGraph = graphForClient;
+				}
+				
 				this.graphsExplorer.clearGraphsBeingComputedAtSize(graphForClient.size());
-				graphForClient = graphForClient.clone();
+				graphForClient = this.lowestCountGraph.clone();
 				graphForClient.flipRandomEdges();
 				graphForClient.setBestCount(new CliqueCounter(graphForClient.getRawGraph())
 				.getMonochromaticSubcliquesCount());
