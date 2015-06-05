@@ -189,7 +189,7 @@ public class GraphWithInfos extends Graph {
 	}
 	
 	public void flipRandomEdges() {
-		int numberOfEdgesToFlip = (int) (this.size * .05);
+		int numberOfEdgesToFlip = 4;
 		
 		for (int i = 0; i < numberOfEdgesToFlip; i++) {
 			Pair<Integer, Integer> p = this.getRandomCoord();

@@ -50,11 +50,13 @@ public class Scheduler {
 			graphForClient = counterExamples.getFirst();
 			graphForClient = graphForClient
 					.copyGraph(maxCounterExampleSize + 1);
+			graphForClient.setGraphID(this.currentGraphID);
+			
 		} else {
 			graphForClient = this.graphsExplorer
 					.getGraphBeingComputedWithLowestBestCount(maxGraphBeingComputedSize);
 			
-			if (graphForClient.getSubmittedAt() < (System.currentTimeMillis()-120000)) {
+			if (graphForClient.getSubmittedAt() < (System.currentTimeMillis()-60000)) {
 				LOGGER.info("Stuck at best count:" + graphForClient.getBestCount());
 				// Clear the graphBeingComputed list and set best count to be a very high value
 				
